@@ -1,12 +1,14 @@
-import { ColorModeScript } from '@chakra-ui/react';
+// import { ColorModeScript } from '@chakra-ui/react';
 import React, { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
-import LoginUser from './LGuser';
-import LoginEmployee from './LGemployee';
-import LoginAdmin from './LGadmin';
+import LoginUser from './components/LGuser';
+import LoginEmployee from './components/LGemployee';
+import LoginAdmin from './components/LGadmin';
+import Footer from './components/Footer';
+import AdminDashboard from './pages/admin-dashboard';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
@@ -17,6 +19,8 @@ root.render(
     <LoginUser />
     <LoginAdmin />
     <LoginEmployee />
+    <Footer />
+    <AdminDashboard/>
   </StrictMode>
 );
 
