@@ -31,7 +31,7 @@ const SRCard = (props) => {
     return (
     <div>
         <Card
-        py="1rem"
+        py="3rem"
         my="2rem"
         px="2rem"
         mx="4rem"
@@ -52,7 +52,7 @@ const SRCard = (props) => {
             <GridItem w='100%' h='15' textAlign={"center"} >{props.req[1]}</GridItem>
             <GridItem w='100%' h='15' textAlign={"center"}>{props.req[2]}</GridItem>
             <GridItem w='100%' h='15' textAlign={"center"} >{props.req[3]}</GridItem>
-            <GridItem w='100%' h='15'  >{props.req[4]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[4]}</GridItem>
         </Grid>
         <br />
         <br />

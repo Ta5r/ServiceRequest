@@ -9,6 +9,7 @@ import LoginEmployee from './components/LGemployee';
 import LoginAdmin from './components/LGadmin';
 import Footer from './components/Footer';
 import AdminDashboard from './pages/admin-dashboard';
+import RequestService from './pages/RequestService';
 
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
@@ -17,6 +18,8 @@ root.render(
   <StrictMode>
     <App />
     <LoginUser />
+    <RequestService/>
+    <hr/>
     <LoginAdmin />
     <LoginEmployee />
     <Footer />

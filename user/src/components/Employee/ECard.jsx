@@ -7,17 +7,17 @@ const ECard = (props) => {
     return (
     <div>
         <Card
-        py="1rem"
+        py="3rem"
         my="2rem"
         px="2rem"
         mx="4rem"
-        width="60vw"
+        width="40vw"
         borderRadius="16px"
         boxShadow=" 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-        height={{ sm: "200px" }}
+        height={{ sm: "150px" }}
         bg="white"
         position="relative">
-            <Grid templateColumns='repeat(5, 1fr)' gap={6}>
+            <Grid templateColumns='repeat(5, 1fr)' gap={3}>
             <GridItem w='100%' h='15' textAlign={"center"}>{props.req[0]}</GridItem>
             <GridItem w='100%' h='15' >
                 <Text
@@ -28,14 +28,12 @@ const ECard = (props) => {
             </GridItem>
             <GridItem w='100%' h='15' textAlign={"center"}>{props.req[2]}</GridItem>
             <GridItem w='100%' h='15' textAlign={"center"} >{props.req[3]}</GridItem>
-        </Grid>
-        <br />
-        <br />
-        <br />
-        <br />
+        <GridItem w='100%' h='15' textAlign={"center"}>
         <Link to="#" color={"blue"} >
             DETAILS
         </Link>
+            </GridItem>
+        </Grid>
         </Card>
     </div>
   )
