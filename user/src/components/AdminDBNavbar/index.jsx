@@ -40,7 +40,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 
 export default function AdminDBNavbar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const sector="B";
   return (
     <ChakraProvider theme={theme}>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -59,10 +59,10 @@ export default function AdminDBNavbar() {
             // textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}>
-            RDSO IOW Admin
+            SSE / Civil - {sector}
           </Text>
             </Box>
-            <HStack
+            {/* <HStack
               as={'nav'}
               spacing={4}
               display={{ base: 'none', md: 'flex' }}>
@@ -72,7 +72,7 @@ export default function AdminDBNavbar() {
               ))}
 
               
-            </HStack>
+            </HStack> */}
           </HStack>
           <Flex alignItems={'center'}>
             <Menu>

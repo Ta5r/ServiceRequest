@@ -52,7 +52,6 @@ function App() {
               Login
             </Button>
             <Button rounded={'full'}>Admin</Button>
-            <Button rounded={'full'}>Employee</Button>
           </Stack>
         </Stack>
       </Flex>

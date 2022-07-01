@@ -5,7 +5,7 @@ import {
   } from '@chakra-ui/react';
   import AdminDBNavbar from "../../components/AdminDBNavbar";
   import ServiceRequests from "../../components/ServiceRequests";
-  import Employee from '../../components/Employee';
+  import Employee from '../../components/Admin';
 
 const AdminDashboard = () => {
   return (
@@ -13,7 +13,7 @@ const AdminDashboard = () => {
     <div style={{backgroundColor: "#edf2f7"}}>
 
     <AdminDBNavbar/>
-    <ServiceRequests/>
+    <ServiceRequests sector="B"/>
     <hr/>
     <Employee/>
     </div>

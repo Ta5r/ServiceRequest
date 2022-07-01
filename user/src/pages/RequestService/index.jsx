@@ -39,8 +39,19 @@ import {
             p={8}>
             <Stack spacing={4}>
 
-              <FormControl id="email">
+            <FormControl id="complaint-category">
                 <FormLabel>Category</FormLabel>
+                <Select placeholder='Select option'>
+  <option value='Civil'>Civil</option>
+  <option value='Electrical'>Electrical</option>
+  <option value='Horticulture'>Horticulture</option>
+  <option value='Plumbing'>Plumbing</option>
+  <option value='misc'>Miscellaneous</option>
+</Select>
+              </FormControl>
+
+              <FormControl id="subcategory">
+                <FormLabel>Complaint</FormLabel>
                 <Select placeholder='Select option'>
   <option value='Civil'>Civil</option>
   <option value='Electrical'>Electrical</option>

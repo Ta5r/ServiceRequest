@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text } from '@chakra-ui/react';
-import ECard from './ECard';
-import Employees from '../../Static/Employee';
-const Employee = () => {
+import ECard from './ACard';
+import Admins from '../../Static/Admin';
+const Admin = () => {
   return (
     <>
         
@@ -12,7 +12,7 @@ const Employee = () => {
     my="4rem"
     mx="5rem"
     >
-    Employees
+    Admins
     </Text>
     
     <Text
@@ -25,7 +25,7 @@ const Employee = () => {
     </Text>
 
     {
-        Employees.map(req=>(
+        Admins.map(req=>(
         req[2]==="Civil"
       ? (<ECard req={req}/>)
       : null            
@@ -42,7 +42,7 @@ const Employee = () => {
     </Text>
     
     {
-        Employees.map(req=>(
+        Admins.map(req=>(
         req[2]==="Plumbing"
       ? (<ECard req={req}/>)
       : null            
@@ -60,7 +60,7 @@ const Employee = () => {
     
     
     {
-        Employees.map(req=>(
+        Admins.map(req=>(
         req[2]==="Electrical"
       ? (<ECard req={req}/>)
       : null            
@@ -76,7 +76,7 @@ const Employee = () => {
     </Text>
     
     {
-        Employees.map(req=>(
+        Admins.map(req=>(
         req[2]==="Horticulture"
       ? (<ECard req={req}/>)
       : null            
@@ -86,4 +86,4 @@ const Employee = () => {
   )
 }
 
-export default Employee;
+export default Admin;

@@ -5,29 +5,7 @@ import { Grid, GridItem } from '@chakra-ui/react'
 
 const SRCard = (props) => {
     var color="white";
-    if(props.req[2]==="Civil")
-    {
-         color = "#d1b394";
-    }
-    else 
-    if(props.req[2]==="Electrical")
-    {
-         color = "#e6df87";
-    }
-    else
-    if(props.req[2]==="Horticulture")
-    {
-         color = "#86e39a";
-    }
-    else
-    if(props.req[2]==="Plumbing")
-    {
-         color = "#9bb5e8";
-    }
-    else
-    {
-        color = "#e8e7e6"
-    }
+
     return (
     <div>
         <Card
@@ -41,26 +19,42 @@ const SRCard = (props) => {
         height={{ sm: "200px" }}
         bg={color}
         position="relative">
-        <Grid templateColumns='repeat(5, 1fr)' gap={6}>
+        
+        
+        <Grid templateColumns='repeat(6, 1fr)' gap={6}>
             <GridItem w='100%' h='15'  >
             <Text
             fontWeight={"bold"}
             fontSize="18px">
-            {props.req[0]}
+            {props.req[3]}-{props.req[2]}
             </Text>
             </GridItem>
-            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[1]}</GridItem>
-            <GridItem w='100%' h='15' textAlign={"center"}>{props.req[2]}</GridItem>
-            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[3]}</GridItem>
-            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[4]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[5]}/{props.req[6]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"}>{props.req[7]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[8]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[9]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[10]}</GridItem>
         </Grid>
         <br />
         <br />
         <br />
         <br />
-        <Link to="#" color={"blue"} >
+        <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+            <GridItem w='100%' h='15'  >
+            <Text
+            fontWeight={"bold"}
+            fontSize="18px">
+            {props.req[14]}-{props.req[13]}
+            </Text>
+            </GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[15]}</GridItem>
+            <GridItem w='100%' h='15' textAlign={"center"} >{props.req[16]}</GridItem>
+        </Grid>
+        
+        
+        {/* <Link to="#" color={"blue"} >
             DETAILS
-        </Link>
+        </Link> */}
         </Card>
     </div>
   )
