@@ -25,7 +25,6 @@ export default function LoginUser() {
   const [msg, setmsg] = useState('');
   const handleemailChange = e => setemail(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
-  // console.log(input);
   const handleSubmit = async event => {
     event.preventDefault();
     console.log(email);
@@ -36,8 +35,9 @@ export default function LoginUser() {
         email,
         password,
       });
-      // console.log(dat.data);
-        if(dat.status!=="200")
+      console.log("data : "+dat.data);
+      console.log("status : "+dat.status);
+        if(dat.status===200)
         {
           navigate("/user/dashboard");
         }

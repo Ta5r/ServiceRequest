@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import User from "../model/userSchema.js";
 
 const Authenticate = async (req, res, next) => {
+  // const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc5LCJpYXQiOjE2NTY4MjcyNTF9.o8iBs-SgcxOPv_NYbIodJOeyN4sTZMFUF3xUDATyNc8";
   const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc5LCJpYXQiOjE2NTY4MjM4MzZ9.OZ64w49V-PVIKK79R5QjcCrdxDlj-cXcB0n4NPGikHs";
   try {
     const text = ""+req.headers.cookie;
@@ -11,8 +12,10 @@ const Authenticate = async (req, res, next) => {
     console.log("TOKEN __  :  " + token);
     const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";
     const verifyToken = jwt.verify(token, SECRET_KEY);
-
+    
+    console.log("is");
     console.log(verifyToken._id);
+    console.log("was");
     const rootUser = await User.findOne({
       EID: verifyToken.EID,
       "tokens.token": token,

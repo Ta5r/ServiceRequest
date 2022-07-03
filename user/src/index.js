@@ -19,16 +19,16 @@ const routing = (
       <Routes>
       <Route path="/" component={App} element={<App />} exact/>
       <Route path="/admin" component={LoginAdmin} element={<LoginAdmin />}/>
-      <Route path="/user" component={LoginUser} element={<LoginUser />}/>
-
-      <Route path="/user/request" component={RequestService} element={<RequestService />}/>
-      <Route path="/user/status" component={RequestService} element={<RequestStatus />}/>
-
-      <Route path="/user/dashboard" component={UserDashBoard} element={<UserDashBoard />}/>
       <Route path="/admin/dashboard" component={AdminDashboard} element={<AdminDashboard />}/>
+
+      <Route path="/user" component={LoginUser} element={<LoginUser />}/>
+      <Route path="/user/dashboard" component={UserDashBoard} element={<UserDashBoard />}/>
+      <Route path="/user/dashboard/request" component={RequestService} element={<RequestService />}/>
+      <Route path="/user/dashboard/status" component={RequestStatus} element={<RequestStatus />}/>
+
       </Routes>
     </div>
-    <Footer/>
+    {/* <Footer/> */}
   </Router>
 );
 

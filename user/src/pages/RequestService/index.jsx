@@ -24,27 +24,23 @@ export default function ServiceRequest() {
   const [Description, setDescription] = useState('');
   const [msg, setmsg] = useState('Please fill the following details');
   const navigate = useNavigate();
-  const [name, setName] = useState('');
+  const [S_EID,setEID] = useState('');
+  const [S_name, setName] = useState('');
+  const [S_designation , setdesignation ] = useState('');
+  const [S_phone , setphone ] = useState('');
+  const [S_sector , setsector ] = useState('');
+  const [S_block , setblock ] = useState('');
+  const [S_qrtr , setqrtr ] = useState('');
 
   const handleCategoryChange = e => setCategory(e.target.value);
   const handleDescriptionChange = e => setDescription(e.target.value);
   const handleSubCategoryChange = e => setSubCategory(e.target.value);
-  var EID='';
-  // var name='';
-  var designation='';
-  var phone='';
-  var sector='';
-  var block='';
-  var qrtr='';
-  var category='';
-  var subcategory='';
-  var description='';
+  
 
   useEffect(() => {
     //Runs only on the first render
     try {
-      // let data =
-      fetch('/user/requestform', {
+      fetch('/user/dashboard/requestform', {
         method: 'GET',
         headers: {
           Accept: 'application/json',
@@ -53,114 +49,72 @@ export default function ServiceRequest() {
         credentials: 'include',
       }).then(response => {
         response.json().then(response => {
-          console.log(response);                    
-          EID = response.EID;
-          // name = response.name;
-          designation = response.designation;
-          phone = response.phone;
-          sector = response.sector;
-          block = response.block;
-          qrtr = response.qrtr;
-          console.log("VAR - "+EID);
-          console.log("VAR - "+name);        // works fine on console
-          console.log("VAR - "+designation);
-          console.log("VAR - "+phone);
-          console.log("VAR - "+sector);
-          console.log("VAR - "+block);
-          console.log("VAR - "+qrtr);
+          console.log(response);
+
+          setEID(response.EID);
+          setName(response.name);
+          setdesignation(response.designation);
+          setphone(response.phone);
+          setsector(response.sector);
+          setblock(response.block);
+          setqrtr(response.qrtr);
+
         });
       });
     } catch (err) {
       console.log('Error occured ');
       console.log(err);
     }
-    //Runs only on the first render
   }, []);
 
+  const navigato_UDB = async event => {
+    navigate("/user/dashboard");
+  }
   const handleSubmit = async event => {
     event.preventDefault();
+    try {
+      const category = Category;
+      const subcategory = SubCategory;
+      const description = Description;
+      const EID = S_EID;
+      const name  = S_name;
+      const designation = S_designation;
+      const phone = S_phone;
+      const sector = S_sector;
+      const block = S_block;
+      const qrtr  = S_qrtr;
 
-    try{
-      fetch('/user/requestform', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: {
-          category,
-          subcategory,
-          description
-        },
-        credentials: 'include',
-      }).then(response => {
-        response.json().then(response => {
-          console.log(response);                    
-          EID = response.EID;
-          // name = response.name;
-          designation = response.designation;
-          phone = response.phone;
-          sector = response.sector;
-          block = response.block;
-          qrtr = response.qrtr;
-          console.log("VAR - "+EID);
-          console.log("VAR - "+name);        // works fine on console
-          console.log("VAR - "+designation);
-          console.log("VAR - "+phone);
-          console.log("VAR - "+sector);
-          console.log("VAR - "+block);
-          console.log("VAR - "+qrtr);
-        });
+      let dat = await axios.post('http://localhost:8000/user/dashboard/request',{
+        EID,
+        name,
+        designation,
+        phone,
+        sector,
+        block,
+        qrtr,
+        category,
+        subcategory,
+        description
       });
-    }
-    catch(err) {
+      console.log(dat);
+      console.log("status : "+dat.status);
+      if(dat.status==201)
+      {
+        console.log("Service Request Successfully placed");
+        setmsg("Service Request Successfully placed");
+      }
+      else{
+        console.log("Couldn't place Service Request");
+      }
+    } catch (err) {
       console.log(err);
     }
 
-    // try {
-    //   category = Category;
-    //   subcategory = SubCategory;
-    //   description = Description;
-
-    //   console.log(EID);
-    //   console.log(name);
-    //   console.log(designation);
-    //   console.log(phone);
-    //   console.log(sector);
-    //   console.log(block);
-    //   console.log(qrtr);
-    //   console.log(category);
-    //   console.log(subcategory);
-    //   console.log(description);
-
-    //   let dat = await axios.post('http://localhost:8000/user/request', {
-    //     EID,
-    //     name,
-    //     designation,
-    //     phone,
-    //     sector,
-    //     block,
-    //     qrtr,
-    //     category,
-    //     subcategory,
-    //     description,
-    //   });
-    // if(dat.status!=="200")
-    // {
-    // navigate("/user/dashboard");
-    // }
-    // else
-    // {
-    //   setmsg("Could not POST service request");
-    // }
-    // } catch (error) {
-    //   console.log(error);
-    // }
   };
 
   return (
     <ChakraProvider theme={theme}>
-      <UserDBNavBar name={name} />
+      <UserDBNavBar name={S_name} />
 
       <Flex
         minH={'93vh'}
@@ -199,8 +153,10 @@ export default function ServiceRequest() {
 
                 <FormControl id="subcategory">
                   <FormLabel>Complaint</FormLabel>
-                  <Select placeholder="Select option"
-                    onChange={handleSubCategoryChange}>
+                  <Select
+                    placeholder="Select option"
+                    onChange={handleSubCategoryChange}
+                  >
                     <option value="testa">testa</option>
                     <option value="testb">testb</option>
                     <option value="testc">testc</option>
@@ -231,7 +187,10 @@ export default function ServiceRequest() {
                 </FormControl>
                 <FormControl id="description">
                   <FormLabel>Description</FormLabel>
-                  <Textarea placeholder="Please provide a description for the service request." onChange={handleDescriptionChange}/>
+                  <Textarea
+                    placeholder="Please provide a description for the service request."
+                    onChange={handleDescriptionChange}
+                  />
                 </FormControl>
                 <Stack spacing={10}>
                   <Button
@@ -240,12 +199,25 @@ export default function ServiceRequest() {
                     _hover={{
                       bg: 'blue.500',
                     }}
+                    my={"1rem"}
                     type="submit"
                   >
                     Submit Request
                   </Button>
                 </Stack>
               </form>
+              <Stack spacing={10}>
+                  <Button
+                    bg={'blue.400'}
+                    color={'white'}
+                    _hover={{
+                      bg: 'blue.500',
+                    }}
+                    onClick={navigato_UDB}
+                  >
+                    Back to DashBoard
+                  </Button>
+                </Stack>
             </Stack>
           </Box>
         </Stack>

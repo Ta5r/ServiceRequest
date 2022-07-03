@@ -7,7 +7,7 @@ import User from "../model/userSchema.js";
 import jwt from "jsonwebtoken";
 import authenticate from "../middleware/Authenticate.js";
 
-const ACCESS_KEY="QWERTYUIOP1234567890ASDFGHJKL"
+const ACCESS_KEY = "QWERTYUIOP1234567890ASDFGHJKL";
 const complaintsHandler = new Map([
   ["testa", "JE"],
   ["testb", "SSE"],
@@ -168,11 +168,10 @@ router.post("/user/login", async (req, res) => {
         // res.json({accessToken: accessToken})
 
         token = await user.generateAuthToken();
-        console.log("Tokenn /routes/ -> "+token);
+        console.log("Tokenn /routes/ -> " + token);
         res.cookie("jwtoken", token);
         console.log(user);
         res.send(user);
-
       } else {
         console.log("Wrong Password");
         res.status(401).send("Wrong Password");
@@ -185,15 +184,13 @@ router.post("/user/login", async (req, res) => {
   }
 });
 
-
-
-router.get('/user/dashboard', authenticate ,function(req, res){
+router.get("/user/dashboard", authenticate, function (req, res) {
   console.log("Hello from GET / user / dashboard");
   console.log(req.rootUser);
   res.send(req.rootUser);
 });
 
-router.get('/user/requestform', authenticate ,function(req, res){
+router.get("/user/dashboard/requestform", authenticate, function (req, res) {
   console.log("Hello from GET / user / serviceform");
   console.log(req.rootUser);
   res.send(req.rootUser);
@@ -209,20 +206,46 @@ function findMinReq(tasks) {
   console.log("Find Min Funciton ends ");
   return index;
 }
-router.post("/user/request", authenticate, async (req, res) => {
-  
-  const EID = req.rootUser.EID;
-  const name = req.rootUser.name;
-  const designation = req.rootUser.designation;
-  const phone = req.rootUser.phone;
-  const sector = req.rootUser.sector;
-  const block = req.rootUser.block;
-  const qrtr = req.rootUser.qrtr;
+
+router.get("/user/show/:EID", async (req, res) => {
+  // const { EID } = req.body;
+  const EID = req.params.EID;
+  try {
+    const complaints = await Complaint.find({ EID });
+    console.log(complaints);
+    // console.log(JSON.stringify(complaints));
+    res.send(JSON.stringify(complaints));
+  } catch (error) {
+    console.log("Error Occured");
+    console.log(err);
+  }
+});
+
+router.post("/user/dashboard/request", async (req, res) => {
   const {
+    EID,
+    name,
+    designation,
+    phone,
+    sector,
+    block,
+    qrtr,
     category,
     subcategory,
     description,
   } = req.body;
+
+  console.log(EID);
+  console.log(name);
+  console.log(designation);
+  console.log(phone);
+  console.log(sector);
+  console.log(block);
+  console.log(qrtr);
+  console.log(category);
+  console.log(subcategory);
+  console.log(description);
+
   const timestamp = Date();
   const status = "pending";
   var asgnTO_ID = "";
@@ -233,6 +256,7 @@ router.post("/user/request", authenticate, async (req, res) => {
   const completedTime = "";
 
   const post_to_assign_task = complaintsHandler.get(subcategory);
+  console.log("post ot assign task : " + post_to_assign_task);
 
   try {
     const admin = await Admin.find({
@@ -258,10 +282,12 @@ router.post("/user/request", authenticate, async (req, res) => {
     }
     const admin_id_with_min_req = findMinReq(tasks);
     console.log("to assign to " + admin[admin_id_with_min_req].name);
+
     asgnTO_ID = admin[admin_id_with_min_req].AID;
     asgnTO_name = admin[admin_id_with_min_req].name;
     asgnTO_desig = admin[admin_id_with_min_req].designation;
     asgnTO_contact = admin[admin_id_with_min_req].phone;
+    // working fine
   } catch (err) {
     console.log(err);
   }
