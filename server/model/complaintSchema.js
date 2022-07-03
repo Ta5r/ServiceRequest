@@ -5,7 +5,9 @@
 // [11]-STATUS, [12]-ASSIGNEDTO_ID,  
 // [13]-ASSIGNEDTO-NAME,    [14]-Designation,   
 // [15]-Contact,   [16]-FeedBack  [17]- Completed TimeStamp
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 
 const complaintSchema = new mongoose.Schema({
   EID: {
@@ -84,4 +86,4 @@ const complaintSchema = new mongoose.Schema({
 
 const Complaint = mongoose.model("COMPLAINT", complaintSchema);
 
-module.exports = Complaint;
+export default Complaint;

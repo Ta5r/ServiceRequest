@@ -1,9 +1,12 @@
-const express = require("express");
+import express from "express";
 const app = express();
+import cors from 'cors';
 const PORT = 8000;
-  require("./db/conn");
+import "./db/conn.js";
+import router from "./router/routes.js";
+  app.use(cors());
   app.use(express.json());
-  app.use(require("./router/routes"));
+  app.use(router);
   app.listen(PORT, () => {
     console.log(`Server running at: http://localhost:${PORT}/`);
   });

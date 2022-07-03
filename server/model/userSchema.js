@@ -1,4 +1,7 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";
 
 const userSchema = new mongoose.Schema({
   EID: {
@@ -37,8 +40,30 @@ const userSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ]
 });
+
+userSchema.methods.generateAuthToken = async function () {
+  try {
+    let token = jwt.sign({ EID: this.EID }, SECRET_KEY);
+    this.tokens = this.tokens.concat({ token: token });
+    await this.save();
+    console.log("userscema/generateAuthToken : "+token)
+    return token;
+  } catch (err) {
+    {
+      console.log(err);
+    }
+  }
+};
 
 const User = mongoose.model("USER", userSchema);
 
-module.exports = User;
+export default User;

@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
+
 
 const adminSchema = new mongoose.Schema({
   AID: {
@@ -41,4 +43,4 @@ const adminSchema = new mongoose.Schema({
 
 const Admin = mongoose.model("ADMIN", adminSchema);
 
-module.exports = Admin;
+export default Admin;

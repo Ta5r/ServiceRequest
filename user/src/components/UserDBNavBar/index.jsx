@@ -1,4 +1,3 @@
-// import { ReactNode } from 'react';
 import {
     Box,
     Flex,
@@ -21,24 +20,25 @@ import {
   } from '@chakra-ui/react';
   import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
   
-  const Links = [ 'Service Requests', 'Complaint Status'];
+  // const Links = [ 'Service Requests', 'Complaint Status'];
   
-  const NavLink = ({ children }: { children: ReactNode }) => (
-    <Link
-      px={2}
-      py={1}
-      rounded={'md'}
-      _hover={{
-        textDecoration: 'none',
-        bg: useColorModeValue('gray.200', 'gray.700'),
-      }}
-      href={'#'}>
-      {children}
-    </Link>
-  );
+  // const NavLink = ({ children }: { children: ReactNode }) => (
+  //   <Link
+  //     px={2}
+  //     py={1}
+  //     rounded={'md'}
+  //     _hover={{
+  //       textDecoration: 'none',
+  //       bg: useColorModeValue('gray.200', 'gray.700'),
+  //     }}
+  //     href={'#'}>
+  //     {children}
+  //   </Link>
+  // );
   
-  export default function AdminDBNavbar() {
+  export default function UserDBNavbar(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const name = props.name;
   
     return (
       <ChakraProvider theme={theme}>
@@ -65,11 +65,13 @@ import {
                 spacing={4}
                 display={{ base: 'none', md: 'flex' }}>
   
-                {Links.map((link) => (
-                  <NavLink key={link}>{link}</NavLink>
-                ))}
-  
-                
+          <Link href="/user/request">
+                Make Service Request
+          </Link>
+          <Link
+          href="/user/status">
+                Complaint Status
+          </Link>      
               </HStack>
             </HStack>
             <Flex alignItems={'center'}>
@@ -95,7 +97,7 @@ import {
                     py={"5px"}
                     pb={"15px"}
                     >
-                        Mr. Rajeev Srivastava
+                        {name}
                         <br/>
                     </Text>
                   {/* <MenuItem></MenuItem> */}
@@ -107,7 +109,7 @@ import {
             </Flex>
           </Flex>
   
-          {isOpen ? (
+          {/* {isOpen ? (
             <Box pb={4} display={{ md: 'none' }}>
               <Stack as={'nav'} spacing={4}>
                 {Links.map((link) => (
@@ -115,7 +117,7 @@ import {
                 ))}
               </Stack>
             </Box>
-          ) : null}
+          ) : null} */}
         </Box>
       </ChakraProvider>
     );

@@ -5,5 +5,3 @@ const complaintsHandler = new Map(
         ["testc","JE"],
     ]
 );
-
-const sup = "ollooo";

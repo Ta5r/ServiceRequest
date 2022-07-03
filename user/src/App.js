@@ -6,12 +6,15 @@ import {
   Flex,
   Button,
   Image,
+  Link,
   Heading,
   theme
 } from '@chakra-ui/react';
 function App() {
   return (
     <ChakraProvider theme={theme}>
+      <div>
+
       <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
       <Flex p={8} flex={1} align={'center'} justify={'center'}>
         <Stack spacing={6} w={'full'} maxW={'lg'}>
@@ -42,6 +45,8 @@ function App() {
              Lucknow. It provides a simple solution of placing serivce requests.
           </Text>
           <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
+            <Link
+            href="/user">
             <Button
               rounded={'full'}
               bg={'blue.400'}
@@ -51,7 +56,10 @@ function App() {
               }}>
               Login
             </Button>
+            </Link>
+            <Link href="/admin">
             <Button rounded={'full'}>Admin</Button>
+            </Link>
           </Stack>
         </Stack>
       </Flex>
@@ -67,6 +75,7 @@ function App() {
         />
       </Flex>
     </Stack>
+</div>
     </ChakraProvider>
   );
 }
