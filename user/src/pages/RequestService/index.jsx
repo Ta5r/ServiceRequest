@@ -9,6 +9,7 @@ import {
   Textarea,
   Stack,
   Button,
+  Input,
   Heading,
   Text,
   useColorModeValue,
@@ -33,6 +34,9 @@ export default function ServiceRequest() {
   const [S_qrtr , setqrtr ] = useState('');
 
   const handleCategoryChange = e => setCategory(e.target.value);
+  const handleSectorChange = e => setsector(e.target.value);
+  const handleBlockChange = e => setblock(e.target.value);
+  const handleQrtrChange = e => setqrtr(e.target.value);
   const handleDescriptionChange = e => setDescription(e.target.value);
   const handleSubCategoryChange = e => setSubCategory(e.target.value);
   
@@ -139,6 +143,41 @@ export default function ServiceRequest() {
           >
             <Stack spacing={4}>
               <form onSubmit={handleSubmit}>
+                <Text>Emp ID : {S_EID}</Text>
+                <Text>Design :{S_designation}</Text>
+                <Text>Name : Mr. {S_name}</Text>
+                <Text>Contact : {S_phone}</Text>
+                <Text>Address : {S_sector}-{S_block}/{S_qrtr}</Text><br/>
+                <FormControl id="complaint-address">
+                  <FormLabel>Sector</FormLabel>
+                  <Select
+                    placeholder={S_sector}
+                    onChange={handleSectorChange}
+                  >
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+
+                  </Select>
+                  <FormLabel>Block</FormLabel>
+                  <Input
+                    placeholder={S_block}
+                    type="number"
+                    onChange={handleBlockChange}
+                  >
+                  </Input>
+                  <FormLabel>Quarter</FormLabel>
+                  <Select
+                    placeholder={S_qrtr}
+                    onChange={handleQrtrChange}
+                  >
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+
+                  </Select>
+                </FormControl>
                 <FormControl id="complaint-category">
                   <FormLabel>Category</FormLabel>
                   <Select

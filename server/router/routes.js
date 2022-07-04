@@ -82,6 +82,7 @@ router.get("/admin/dashboard", authenticateadmin, async (req, res) => {
 
 router.post("/admin/login", async (req, res) => {
   const { email, password } = req.body;
+  var tokenAdmin;
   try {
     const admin = await Admin.findOne({ email });
     if (admin) {
@@ -90,9 +91,8 @@ router.post("/admin/login", async (req, res) => {
 
         console.log(admin);
         await JSON.stringify(admin);
-        token = await admin.generateAdminAuthToken();
+        var token = await admin.generateAdminAuthToken();
         console.log("Tokenn /routes/ -> " + token);
-        // res.cookie("jwtoken", token);
         console.log(admin);
         res.send({admin,token});
         
@@ -116,18 +116,32 @@ router.post("/admin/login", async (req, res) => {
     console.log(err);
   }
 });
-router.get("/admin/requests/", async (req, res) => {
-  const sector = req.body.sector.toUpperCase();
-  console.log("Sector = " + sector);
+router.post('/admin/close', async (req, res)=>{
+  const id=req.body.id;
+  console.log("Closing request  ID - "+id);
+  const nowTime = new Date();
+  console.log(nowTime);
+  const result = await Complaint.updateOne({_id:id},{ 
+    $set:{
+      status:"COMPLETED",
+      completedTime:nowTime
+    }
+  })
+  res.json(result);
+});//close admin req
+router.post("/admin/requests/", async (req, res) => {
+  const AID = req.body.AID;
+  var complaintsPending='';
+  console.log("AID = " + AID);
   try {
-    const complaintsPending = await Complaint.find({ sector });
+     complaintsPending = await Complaint.find({ asgnTO_ID:AID });
     complaintsPending.map((reqs) => {
-      console.log(reqs.timestamp);
+      console.log(reqs);
     });
   } catch (err) {
     console.log(err);
   }
-  res.send("GET request to the homepage");
+  res.json(complaintsPending);
 });
 // POST method route
 router.post("/user/register", async (req, res) => {
@@ -256,7 +270,7 @@ router.post("/user/dashboard/request", async (req, res) => {
   console.log(description);
 
   const timestamp = Date();
-  const status = "pending";
+  const status = "PENDING";
   var asgnTO_ID = "";
   var asgnTO_name = "";
   var asgnTO_desig = "";

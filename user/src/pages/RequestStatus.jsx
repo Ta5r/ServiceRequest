@@ -9,7 +9,7 @@ const RequestStatus = props => {
 
   const [S_EID, setEID] = useState('');
   const [S_name, setName] = useState('');
-  const [complaints, setComplaints] = useState(['']);
+  const [complaints, setComplaints] = useState([]);
 
   useEffect(() => {
     //Runs only on the first render
@@ -57,15 +57,20 @@ const RequestStatus = props => {
       </Button>
       {complaints.map(res => (
         <SRCard
+          sector={res.sector}
+          block={res.block}
+          qrtr={res.qrtr}
+          completedTime={res.completedTime}
+          asgnTO_desig={res.designation}
+          feedback="Feedback"
           asgnTO_ID={res.asgnTO_ID}
           asgnTO_name={res.asgnTO_name}
-          asgnTO_designation={res.asgnTO_designation}
           timestamp={res.timestamp}
           status={res.status}
           description={res.description}
           subcategory={res.subcategory}
           category={res.category}
-          phone={res.phone}
+          asgnTO_contact={res.asgnTO_contact}
         />
       ))}
     </ChakraProvider>

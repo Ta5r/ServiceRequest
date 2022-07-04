@@ -22,7 +22,7 @@ export default function LoginUser() {
   const navigate = useNavigate();
   const [email, setemail] = useState('rajiv.signal@gmail.com');
   const [password, setpassword] = useState('21062002');
-  const [msg, setmsg] = useState('oldVal');
+  const [msg, setmsg] = useState('');
   const [token, setToken] = useState('');
   const handleemailChange = e => setemail(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
@@ -51,6 +51,7 @@ export default function LoginUser() {
         if(dat.status===200)
         {
           // navigate("/user/dashboard");
+          setmsg("SUCCEFULL SIGNIN !")
         }
         else
         {
