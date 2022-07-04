@@ -46,16 +46,15 @@ const adminSchema = new mongoose.Schema({
         required: true,
       },
     },
-  ]
+  ],
 });
-
 
 adminSchema.methods.generateAdminAuthToken = async function () {
   try {
-    let token = jwt.sign({ EID: this.EID }, SECRET_KEY);
+    let token = jwt.sign({ AID: this.AID }, SECRET_KEY);
     this.tokens = this.tokens.concat({ token: token });
     await this.save();
-    console.log("adminSchema/generateAdminAuthToken : "+token);
+    console.log("adminSchema/generateAdminAuthToken : " + token);
     return token;
   } catch (err) {
     {
@@ -63,7 +62,6 @@ adminSchema.methods.generateAdminAuthToken = async function () {
     }
   }
 };
-
 
 const Admin = mongoose.model("ADMIN", adminSchema);
 

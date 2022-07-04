@@ -46,7 +46,7 @@ const userSchema = new mongoose.Schema({
         required: true,
       },
     },
-  ]
+  ],
 });
 
 userSchema.methods.generateAuthToken = async function () {
@@ -54,7 +54,7 @@ userSchema.methods.generateAuthToken = async function () {
     let token = jwt.sign({ EID: this.EID }, SECRET_KEY);
     this.tokens = this.tokens.concat({ token: token });
     await this.save();
-    console.log("userscema/generateAuthToken : "+token);
+    console.log("userSchema/generateAuthToken : " + token);
     return token;
   } catch (err) {
     {

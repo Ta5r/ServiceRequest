@@ -21,11 +21,19 @@ import { useState, useEffect } from 'react';
 export default function LoginAdmin() {
 
   const navigate = useNavigate();
+  const [token, setToken] = useState('');
   const [email, setemail] = useState('rajiv.signal@gmail.com');
   const [password, setpassword] = useState('21062002');
   const [msg, setmsg] = useState('please fill your credentials');
   const handleemailChange = e => setemail(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
+  
+  
+  useEffect(() => {
+    localStorage.setItem('AdminTokenID',token);
+  },[token]);
+  
+  
   const handleSubmit = async event => {
     event.preventDefault();
     console.log(email);
@@ -37,9 +45,14 @@ export default function LoginAdmin() {
         password,
       });
       
-      console.log(dat.data);
+      console.log(dat.data.admin);
+      const stringToken = ""+dat.data.token;
+      console.log("String Token : "+stringToken);
+        setToken(dat.data.token);
+      console.log(dat.data.token);
+
       if (dat.status === 200) {
-        navigate('/admin/dashboard');
+        // navigate('/admin/dashboard');
       } else {
         setmsg('INCORRECT CREDENTIALS');
       }

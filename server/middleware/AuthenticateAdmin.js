@@ -2,12 +2,8 @@ import jwt from "jsonwebtoken";
 import Admin from "../model/adminSchema.js";
 
 const AuthenticateAdmin = async (req, res, next) => {
-  const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NTY5MTI2MTh9.nC55R2XJSzgx3t2i7hnLuTHKJNXnmR23B3OOMziyfGg";
   try {
-    // const text = ""+req.headers.cookie;
-    // let len = text.length;
-    // let resultStr = text.slice(8, len);
-    // const token = resultStr;
+    const token=req.headers.token;
     console.log("ADMIN TOKEN __  :  " + token);
     const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";
     const verifyToken = jwt.verify(token, SECRET_KEY);

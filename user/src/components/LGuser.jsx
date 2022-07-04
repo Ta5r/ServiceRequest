@@ -16,19 +16,25 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
 export default function LoginUser() {
   const navigate = useNavigate();
   const [email, setemail] = useState('rajiv.signal@gmail.com');
   const [password, setpassword] = useState('21062002');
-  const [msg, setmsg] = useState('');
+  const [msg, setmsg] = useState('oldVal');
+  const [token, setToken] = useState('');
   const handleemailChange = e => setemail(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
+  
+      useEffect(() => {
+        localStorage.setItem('tokenID',token);
+      },[token]);
+
   const handleSubmit = async event => {
     event.preventDefault();
     console.log(email);
-    console.log(password);
+    console.log(password);    
 
     try {
       let dat = await axios.post('http://localhost:8000/user/login', {
@@ -36,10 +42,15 @@ export default function LoginUser() {
         password,
       });
       console.log("data : "+dat.data);
+      console.log(dat.data.user);
+      const stringToken = ""+dat.data.token;
+      console.log("String Token : "+stringToken);
+        setToken(dat.data.token);
+      console.log(dat.data.token);
       console.log("status : "+dat.status);
         if(dat.status===200)
         {
-          navigate("/user/dashboard");
+          // navigate("/user/dashboard");
         }
         else
         {

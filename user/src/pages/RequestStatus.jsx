@@ -1,15 +1,15 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import UserDBNavBar from '../components/UserDBNavBar';
-import { Button, Text, ChakraProvider, theme } from '@chakra-ui/react';
+import { Button, ChakraProvider, theme } from '@chakra-ui/react';
+import SRCard from '../components/ServiceRequests/SRCard';
 
 const RequestStatus = props => {
   const eid = props.eid;
-  
+
   const [S_EID, setEID] = useState('');
   const [S_name, setName] = useState('');
   const [complaints, setComplaints] = useState(['']);
-  const timestampss = [];
 
   useEffect(() => {
     //Runs only on the first render
@@ -17,6 +17,7 @@ const RequestStatus = props => {
       fetch('/user/dashboard/requestform', {
         method: 'GET',
         headers: {
+          token: localStorage.getItem('tokenID'),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -32,29 +33,21 @@ const RequestStatus = props => {
       console.log('Error occured ');
       console.log(err);
     }
-  }, [timestampss]);
+  }, []);
 
   const handleLoad = () => {
     try {
       axios.get('http://localhost:8000/user/show/' + S_EID).then(response => {
-        console.log(response.data); //works
-        response.data.map((res)=>{
-
-          console.log(res.timestamp);
-          setComplaints(complaints.push(res.timestamp));
-          timestampss.push(res.timestamp);
-
-        });
-        console.log("||");
-        console.log(complaints);
-        // console.log(timestampss[1]);
-        console.log("||");
+        setComplaints(response.data);
       });
     } catch (err) {
       console.log('Error occured ');
       console.log(err);
     }
   };
+  console.log('||');
+  console.log(complaints);
+  console.log('||');
 
   return (
     <ChakraProvider theme={theme}>
@@ -62,9 +55,19 @@ const RequestStatus = props => {
       <Button bgcolor="red" m="2rem" onClick={handleLoad}>
         Load
       </Button>
-      {
-        complaints.map((res)=>(<div><p>Hello</p></div>))
-      }
+      {complaints.map(res => (
+        <SRCard
+          asgnTO_ID={res.asgnTO_ID}
+          asgnTO_name={res.asgnTO_name}
+          asgnTO_designation={res.asgnTO_designation}
+          timestamp={res.timestamp}
+          status={res.status}
+          description={res.description}
+          subcategory={res.subcategory}
+          category={res.category}
+          phone={res.phone}
+        />
+      ))}
     </ChakraProvider>
   );
 };

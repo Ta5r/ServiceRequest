@@ -13,10 +13,13 @@ const UserDashBoard = () => {
 
   useEffect(() => {
     //Runs only on the first render
+    var x = localStorage.getItem('tokenID');
     try {
+      console.log("userdahboard token read from localStorage : "+x);
       fetch('/user/dashboard/requestform', {
         method: 'GET',
         headers: {
+          'token': x,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

@@ -40,9 +40,11 @@ export default function ServiceRequest() {
   useEffect(() => {
     //Runs only on the first render
     try {
+      console.log(localStorage.getItem('tokenID'));
       fetch('/user/dashboard/requestform', {
         method: 'GET',
         headers: {
+          'token':localStorage.getItem('tokenID'),
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },

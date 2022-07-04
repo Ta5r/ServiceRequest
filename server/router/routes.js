@@ -92,9 +92,9 @@ router.post("/admin/login", async (req, res) => {
         await JSON.stringify(admin);
         token = await admin.generateAdminAuthToken();
         console.log("Tokenn /routes/ -> " + token);
-        res.cookie("jwtoken", token);
+        // res.cookie("jwtoken", token);
         console.log(admin);
-        res.send(admin);
+        res.send({admin,token});
         
         // const tasks_to_do = await Complaint.find({
         //   $and: [{ asgnTO_ID: admin.AID }, { status: "pending" }],
@@ -168,7 +168,7 @@ router.post("/user/register", async (req, res) => {
 router.post("/user/login", async (req, res) => {
   console.log(req.body);
   const { email, password } = req.body;
-  let token;
+  var token;
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -178,9 +178,9 @@ router.post("/user/login", async (req, res) => {
         await JSON.stringify(user);
         token = await user.generateAuthToken();
         console.log("Tokenn /routes/ -> " + token);
-        res.cookie("jwtoken", token);
+        // res.cookie("jwtoken", token);
         console.log(user);
-        res.send(user);
+        res.send({user,token});
       } else {
         console.log("Wrong Password");
         res.status(401).send("Wrong Password");
@@ -332,3 +332,7 @@ router.post("/user/dashboard/request", async (req, res) => {
 });
 
 export default router;
+
+
+//cookie : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmJmZDkxNGM4MmUxMjExYTNjN2YxODUiLCJpYXQiOjE2NTY3ODI0NjF9.K1A4glG4Vch0VU8YQj_ZyX6aAhuQEXO7R08yUJEWCFQ
+//db     : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc2LCJpYXQiOjE2NTY5MTYwNTB9.xmrQAqRUqN5E5tnqDCOBpQg0uVzlb5Mhagq2StrEk1g
