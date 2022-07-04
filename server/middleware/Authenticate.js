@@ -5,9 +5,9 @@ const Authenticate = async (req, res, next) => {
   // const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc5LCJpYXQiOjE2NTY4MjcyNTF9.o8iBs-SgcxOPv_NYbIodJOeyN4sTZMFUF3xUDATyNc8";
   const token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc5LCJpYXQiOjE2NTY4MjM4MzZ9.OZ64w49V-PVIKK79R5QjcCrdxDlj-cXcB0n4NPGikHs";
   try {
-    const text = ""+req.headers.cookie;
-    let len = text.length;
-    let resultStr = text.slice(8, len);
+    // const text = ""+req.headers.cookie;
+    // let len = text.length;
+    // let resultStr = text.slice(8, len);
     // const token = resultStr;
     console.log("TOKEN __  :  " + token);
     const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";

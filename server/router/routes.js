@@ -4,10 +4,10 @@ const router = express.Router();
 import Complaint from "../model/complaintSchema.js";
 import Admin from "../model/adminSchema.js";
 import User from "../model/userSchema.js";
-import jwt from "jsonwebtoken";
 import authenticate from "../middleware/Authenticate.js";
+import authenticateadmin from "../middleware/AuthenticateAdmin.js";
 
-const ACCESS_KEY = "QWERTYUIOP1234567890ASDFGHJKL";
+// const ACCESS_KEY = "QWERTYUIOP1234567890ASDFGHJKL";
 const complaintsHandler = new Map([
   ["testa", "JE"],
   ["testb", "SSE"],
@@ -36,9 +36,6 @@ const complaintsHandler = new Map([
   ["testy", "JE"],
   ["testz", "SSE"],
 ]);
-
-const sup = "ollooo";
-
 router.get("/", (req, res) => {
   res.send("Ola Tanay");
   console.log(complaintsHandler.get("testa"));
@@ -76,6 +73,13 @@ router.post("/admin/register", async (req, res) => {
     console.log(err);
   }
 });
+
+router.get("/admin/dashboard", authenticateadmin, async (req, res) => {
+  console.log("Hello from get / admin / dashboard ");
+  console.log(req.rootAdmin);
+  res.send(req.rootAdmin);
+})
+
 router.post("/admin/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -83,21 +87,30 @@ router.post("/admin/login", async (req, res) => {
     if (admin) {
       if (password == admin.password) {
         console.log("Successfullsignin");
-        res.send("Successfullsignin");
 
-        const tasks_to_do = await Complaint.find({
-          $and: [{ asgnTO_ID: admin.AID }, { status: "pending" }],
-        });
+        console.log(admin);
+        await JSON.stringify(admin);
+        token = await admin.generateAdminAuthToken();
+        console.log("Tokenn /routes/ -> " + token);
+        res.cookie("jwtoken", token);
+        console.log(admin);
+        res.send(admin);
+        
+        // const tasks_to_do = await Complaint.find({
+        //   $and: [{ asgnTO_ID: admin.AID }, { status: "pending" }],
+        // });
 
-        console.log("Tasks for you : ");
-        console.log(tasks_to_do);
-        console.log("E N D");
+        // console.log("Tasks for you : ");
+        // console.log(tasks_to_do);
+        // console.log("E N D");
+        // res.send(tasks_to_do);
+        res.status(200).send("Success");
       } else {
         console.log("Wrong Password");
-        res.send("Wrong Password");
+        res.status(400).send({ message: "Wrong Password"});
       }
     } else {
-      res.send("INVALID EMAIL");
+      res.status(402).send({message:"INVALID EMAIL"});
     }
   } catch (err) {
     console.log(err);
@@ -116,7 +129,6 @@ router.get("/admin/requests/", async (req, res) => {
   }
   res.send("GET request to the homepage");
 });
-
 // POST method route
 router.post("/user/register", async (req, res) => {
   const {
@@ -164,9 +176,6 @@ router.post("/user/login", async (req, res) => {
         console.log("Successfullsignin");
         console.log(user);
         await JSON.stringify(user);
-        // const accessToken = jwt.sign({user}, ACCESS_KEY);
-        // res.json({accessToken: accessToken})
-
         token = await user.generateAuthToken();
         console.log("Tokenn /routes/ -> " + token);
         res.cookie("jwtoken", token);

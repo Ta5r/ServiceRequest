@@ -1,0 +1,53 @@
+
+
+
+  var EID='';
+  var name='';
+  var asgnTO_ID='';
+  var asgnTO_name='';
+  var asgnTO_desig='';
+  var asgnTO_contact='';
+  var category='';
+  var subcategory='';
+  var description='';
+  var timestamp='';
+  var completedTime='';
+  var status='';
+  var id='';
+  var complaint=[];
+
+
+          // EID=res.EID;
+          // name=res.name;
+          // asgnTO_ID=res.asgnTO_ID;
+          // asgnTO_name=res.asgnTO_name;
+          // asgnTO_desig=res.asgnTO_desig;
+          // asgnTO_contact=res.asgnTO_contact;
+          // category=res.category;
+          // subcategory=res.subcategory;
+          // description=res.description;
+          // timestamp=res.timestamp;
+          // completedTime=res.completedTime;
+          // status=res.status;
+          // id = res._id;
+
+          // complaint[0]=res.EID;
+          // complaint[1]=res.name;
+          // complaint[2]=res.phone;
+          // complaint[3]=res.designation;
+          // complaint[4]=res.sector;
+          // complaint[5]=res.block;
+          // complaint[6]=res.qrtr;
+          // complaint[7]=res.status;
+          // complaint[8]=res.category;
+          // complaint[9]=res.subcategory;
+          // complaint[11]=res.description;
+          // complaint[12]=res.timestamp;
+          // complaint[13]=res.asgnTO_ID;
+          // complaint[14]=res.asgnTO_name;
+          // complaint[15]=res.asgnTO_desig;
+          // complaint[16]=res.asgnTO_contact;
+          // complaint[17]=res.completedTime;
+          // complaint[18]=res._id;
+          // console.log("REQ"+id+"---TS :"+complaint[12]);
+          // setComplaints(complaints.push(complaint[12]));

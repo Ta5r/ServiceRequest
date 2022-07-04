@@ -46,5 +46,4 @@ const UserDashBoard = () => {
     </div>
   );
 };
-// eid={S_EID} name={S_name} desig={S_designation} phone={S_phone} sector={S_sector} block={S_block} qrtr={S_qrtr}
 export default UserDashBoard;

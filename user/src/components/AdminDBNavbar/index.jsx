@@ -38,9 +38,11 @@ const NavLink = ({ children }: { children: ReactNode }) => (
   </Link>
 );
 
-export default function AdminDBNavbar() {
+export default function AdminDBNavbar(props) {
+  const name=props.name;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const sector="B";
+  const sector=props.sector;
   return (
     <ChakraProvider theme={theme}>
       <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
@@ -59,23 +61,13 @@ export default function AdminDBNavbar() {
             // textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}>
-            SSE / Civil - {sector}
+            Mr. {name} - {sector}
           </Text>
             </Box>
-            {/* <HStack
-              as={'nav'}
-              spacing={4}
-              display={{ base: 'none', md: 'flex' }}>
-
-              {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
-              ))}
-
-              
-            </HStack> */}
           </HStack>
           <Flex alignItems={'center'}>
             <Menu>
+
               <MenuButton
                 as={Button}
                 rounded={'full'}
@@ -90,6 +82,7 @@ export default function AdminDBNavbar() {
                 />
               </MenuButton>
               <MenuList>
+                <Text py={"0.5rem"} px={"0.9rem"} fontWeight={"bold"}>Mr. {name}</Text>
                 <MenuItem>Add Employee</MenuItem>
                 <MenuItem>Update Inventory</MenuItem>
                 <MenuDivider />

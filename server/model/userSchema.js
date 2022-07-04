@@ -1,4 +1,3 @@
-// const mongoose = require("mongoose");
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";
@@ -55,7 +54,7 @@ userSchema.methods.generateAuthToken = async function () {
     let token = jwt.sign({ EID: this.EID }, SECRET_KEY);
     this.tokens = this.tokens.concat({ token: token });
     await this.save();
-    console.log("userscema/generateAuthToken : "+token)
+    console.log("userscema/generateAuthToken : "+token);
     return token;
   } catch (err) {
     {

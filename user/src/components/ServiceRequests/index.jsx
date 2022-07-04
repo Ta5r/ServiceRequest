@@ -3,6 +3,7 @@ import SRCard from '../ServiceRequests/SRCard';
 import Requests from '../../Static/StaticReq';
 import { Text } from '@chakra-ui/react';
 const ServiceRequests = (props) => {
+  
   const sector=props.sector;
     return (
         <>
