@@ -3,11 +3,11 @@ import Admin from "../model/adminSchema.js";
 
 const AuthenticateAdmin = async (req, res, next) => {
   try {
-    const token=req.headers.token;
+    const token = req.headers.token;
     console.log("ADMIN TOKEN __  :  " + token);
     const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";
     const verifyToken = jwt.verify(token, SECRET_KEY);
-    
+
     console.log("is");
     console.log(verifyToken._id);
     console.log("was");

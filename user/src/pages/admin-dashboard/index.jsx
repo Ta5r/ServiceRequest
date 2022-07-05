@@ -1,39 +1,29 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
-import AdminDBNavbar from '../../components/AdminDBNavbar';
-import ServiceRequests from '../../components/ServiceRequests';
+import AdminDBNavbar from '../../components/Admin/AdminDBNavbar';
+import ServiceRequests from '../../components/User/ServiceRequests';
 import axios from 'axios';
 
 const AdminDashboard = () => {
   const [S_AID, setAID] = useState('');
   const [S_name, setName] = useState('');
-  const [S_designation, setdesignation] = useState('');
-  const [S_phone, setphone] = useState('');
   const [S_sector, setsector] = useState('');
-  const [S_department, setdepartment] = useState('');
 
   console.log(S_AID);
 
   useEffect(() => {
     try {
       const headers = {
-        'token' : localStorage.getItem('AdminTokenID'),
-        // 'Content-Type': 'application/json',
+        token: localStorage.getItem('AdminTokenID'),
       };
       axios
         .get('http://localhost:8000/admin/dashboard/', { headers })
         .then(response => {
-          // response.json().then(response => {
-            console.log(response.data);
-
-            setAID(response.data.AID);
-            setName(response.data.name);
-            setdesignation(response.data.designation);
-            setphone(response.data.phone);
-            setsector(response.data.sector);
-            setdepartment(response.data.setdepartment);
-          // });
+          console.log(response.data);
+          setAID(response.data.AID);
+          setName(response.data.name);
+          setsector(response.data.sector);
         });
     } catch (err) {
       console.log(err);

@@ -1,13 +1,12 @@
-// [0]-complaintID  [1]-EmployeeID   [2]-Name,    
-// [3]-Designation,   [4]-Sector, [5]-Block,   
-// [6]-Quarter [7]-Date/Time,   [8]-Category,   
-// [9]-SubCategory,    [10]-Description,   
-// [11]-STATUS, [12]-ASSIGNEDTO_ID,  
-// [13]-ASSIGNEDTO-NAME,    [14]-Designation,   
+// [0]-complaintID  [1]-EmployeeID   [2]-Name,
+// [3]-Designation,   [4]-Sector, [5]-Block,
+// [6]-Quarter [7]-Date/Time,   [8]-Category,
+// [9]-SubCategory,    [10]-Description,
+// [11]-STATUS, [12]-ASSIGNEDTO_ID,
+// [13]-ASSIGNEDTO-NAME,    [14]-Designation,
 // [15]-Contact,   [16]-FeedBack  [17]- Completed TimeStamp
 // const mongoose = require("mongoose");
 import mongoose from "mongoose";
-
 
 const complaintSchema = new mongoose.Schema({
   EID: {
@@ -81,7 +80,11 @@ const complaintSchema = new mongoose.Schema({
   completedTime: {
     type: String,
     required: false,
-  }
+  },
+  adminRemoved: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 const Complaint = mongoose.model("COMPLAINT", complaintSchema);

@@ -4,22 +4,15 @@ import { useState, useEffect } from 'react';
 
 const UserDashBoard = () => {
   const [S_EID, setEID] = useState('');
-  const [S_name, setName] = useState('');
-  const [S_designation, setdesignation] = useState('');
-  const [S_phone, setphone] = useState('');
-  const [S_sector, setsector] = useState('');
-  const [S_block, setblock] = useState('');
-  const [S_qrtr, setqrtr] = useState('');
 
   useEffect(() => {
-    //Runs only on the first render
     var x = localStorage.getItem('tokenID');
     try {
-      console.log("userdahboard token read from localStorage : "+x);
+      console.log('userdahboard token read from localStorage : ' + x);
       fetch('/user/dashboard/requestform', {
         method: 'GET',
         headers: {
-          'token': x,
+          token: x,
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
@@ -27,14 +20,7 @@ const UserDashBoard = () => {
       }).then(response => {
         response.json().then(response => {
           console.log(response);
-
           setEID(response.EID);
-          setName(response.name);
-          setdesignation(response.designation);
-          setphone(response.phone);
-          setsector(response.sector);
-          setblock(response.block);
-          setqrtr(response.qrtr);
         });
       });
     } catch (err) {
@@ -45,7 +31,7 @@ const UserDashBoard = () => {
 
   return (
     <div>
-      <RequestStatus eid={S_EID}/>
+      <RequestStatus eid={S_EID} />
     </div>
   );
 };

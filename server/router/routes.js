@@ -7,7 +7,6 @@ import User from "../model/userSchema.js";
 import authenticate from "../middleware/Authenticate.js";
 import authenticateadmin from "../middleware/AuthenticateAdmin.js";
 
-// const ACCESS_KEY = "QWERTYUIOP1234567890ASDFGHJKL";
 const complaintsHandler = new Map([
   ["testa", "JE"],
   ["testb", "SSE"],
@@ -78,7 +77,7 @@ router.get("/admin/dashboard", authenticateadmin, async (req, res) => {
   console.log("Hello from get / admin / dashboard ");
   console.log(req.rootAdmin);
   res.send(req.rootAdmin);
-})
+});
 
 router.post("/admin/login", async (req, res) => {
   const { email, password } = req.body;
@@ -94,8 +93,8 @@ router.post("/admin/login", async (req, res) => {
         var token = await admin.generateAdminAuthToken();
         console.log("Tokenn /routes/ -> " + token);
         console.log(admin);
-        res.send({admin,token});
-        
+        res.send({ admin, token });
+
         // const tasks_to_do = await Complaint.find({
         //   $and: [{ asgnTO_ID: admin.AID }, { status: "pending" }],
         // });
@@ -107,34 +106,38 @@ router.post("/admin/login", async (req, res) => {
         res.status(200).send("Success");
       } else {
         console.log("Wrong Password");
-        res.status(400).send({ message: "Wrong Password"});
+        res.status(400).send({ message: "Wrong Password" });
       }
     } else {
-      res.status(402).send({message:"INVALID EMAIL"});
+      res.status(402).send({ message: "INVALID EMAIL" });
     }
   } catch (err) {
     console.log(err);
   }
 });
-router.post('/admin/close', async (req, res)=>{
-  const id=req.body.id;
-  console.log("Closing request  ID - "+id);
+router.post("/admin/close", async (req, res) => {
+  const id = req.body.id;
+  console.log("Closing request  ID - " + id);
   const nowTime = new Date();
   console.log(nowTime);
-  const result = await Complaint.updateOne({_id:id},{ 
-    $set:{
-      status:"COMPLETED",
-      completedTime:nowTime
+  const result = await Complaint.updateOne(
+    { _id: id },
+    {
+      $set: {
+        status: "COMPLETED",
+        completedTime: nowTime,
+        adminRemoved: false, //this is a temporary arrangement for old schema based registered complaints
+      },
     }
-  })
+  );
   res.json(result);
-});//close admin req
+}); //close admin req
 router.post("/admin/requests/", async (req, res) => {
   const AID = req.body.AID;
-  var complaintsPending='';
+  var complaintsPending = "";
   console.log("AID = " + AID);
   try {
-     complaintsPending = await Complaint.find({ asgnTO_ID:AID });
+    complaintsPending = await Complaint.find({ asgnTO_ID: AID });
     complaintsPending.map((reqs) => {
       console.log(reqs);
     });
@@ -194,7 +197,7 @@ router.post("/user/login", async (req, res) => {
         console.log("Tokenn /routes/ -> " + token);
         // res.cookie("jwtoken", token);
         console.log(user);
-        res.send({user,token});
+        res.send({ user, token });
       } else {
         console.log("Wrong Password");
         res.status(401).send("Wrong Password");
@@ -242,6 +245,18 @@ router.get("/user/show/:EID", async (req, res) => {
     console.log("Error Occured");
     console.log(err);
   }
+});
+router.post("/admin/remove", async (req, res) => {
+  console.log("TO RMEOVE : " + req.body._id);
+  const result = await Complaint.updateOne(
+    { _id : req.body._id },
+    {
+      $set: {
+        adminRemoved: true
+      },
+    }
+  );
+  res.json({result});
 });
 
 router.post("/user/dashboard/request", async (req, res) => {
@@ -315,6 +330,7 @@ router.post("/user/dashboard/request", async (req, res) => {
     console.log(err);
   }
 
+  const adminRemoved = false;
   try {
     const complaint = new Complaint({
       EID,
@@ -335,18 +351,25 @@ router.post("/user/dashboard/request", async (req, res) => {
       asgnTO_contact,
       feedback,
       completedTime,
+      adminRemoved,
     });
 
     await complaint.save();
 
-    res.status(201).json({ message: "complaint registered successfully" });
+    res
+      .status(201)
+      .json({
+        message: "complaint registered successfully",
+        asgnTO_name,
+        asgnTO_desig,
+        asgnTO_contact,
+      });
   } catch (err) {
     console.log(err);
   }
 });
 
 export default router;
-
 
 //cookie : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmJmZDkxNGM4MmUxMjExYTNjN2YxODUiLCJpYXQiOjE2NTY3ODI0NjF9.K1A4glG4Vch0VU8YQj_ZyX6aAhuQEXO7R08yUJEWCFQ
 //db     : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc2LCJpYXQiOjE2NTY5MTYwNTB9.xmrQAqRUqN5E5tnqDCOBpQg0uVzlb5Mhagq2StrEk1g
