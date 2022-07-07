@@ -52,7 +52,7 @@ const RequestStatus = props => {
     <ChakraProvider theme={theme}>
       <UserDBNavBar eid={S_EID} name={S_name} />
       <Button bgcolor="red" m="2rem" onClick={handleLoad}>
-        Load
+        Show Requests
       </Button>
       {complaints.map(res => (
         <SRCard

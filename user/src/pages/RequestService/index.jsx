@@ -1,6 +1,5 @@
 import {
   ChakraProvider,
-  Select,
   theme,
   Flex,
   Box,
@@ -14,18 +13,37 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import { Select as ChakraSelect } from '@chakra-ui/react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import UserDBNavBar from '../../components/User/UserDBNavBar';
 import FadeInUp from '../../components/Animation/FadeInUp';
+import data from './complaints.json';
+import Select from 'react-select';
 
 export default function ServiceRequest() {
+  const navigate = useNavigate();
+  const [complaint_json, setComplaintJSON] = useState(null);
+  const [sub_cat, setSubCat] = useState(null);
+  const [subCatList, setSubCatList] = useState([]);
+
   const [Category, setCategory] = useState('');
   const [SubCategory, setSubCategory] = useState('');
+  const [Post, setPost] = useState(null);
   const [Description, setDescription] = useState('');
+
+  const handleCategoryChange = obj => {
+    setComplaintJSON(obj);
+    setSubCatList(obj.subcats);
+    setCategory(obj.complaint);
+  };
+  const handleSubCategoryChange = obj => {
+    setSubCat(obj);
+    setSubCategory(obj.name);
+    setPost(obj.code);
+  };
   const [msg, setmsg] = useState('Please fill the following details');
-  const navigate = useNavigate();
   const [S_EID, setEID] = useState('');
   const [S_name, setName] = useState('');
   const [S_designation, setdesignation] = useState('');
@@ -34,12 +52,10 @@ export default function ServiceRequest() {
   const [S_block, setblock] = useState('');
   const [S_qrtr, setqrtr] = useState('');
 
-  const handleCategoryChange = e => setCategory(e.target.value);
   const handleSectorChange = e => setsector(e.target.value);
   const handleBlockChange = e => setblock(e.target.value);
   const handleQrtrChange = e => setqrtr(e.target.value);
   const handleDescriptionChange = e => setDescription(e.target.value);
-  const handleSubCategoryChange = e => setSubCategory(e.target.value);
 
   useEffect(() => {
     //Runs only on the first render
@@ -102,6 +118,7 @@ export default function ServiceRequest() {
           category,
           subcategory,
           description,
+          Post
         }
       );
       console.log(dat);
@@ -110,6 +127,7 @@ export default function ServiceRequest() {
         console.log('Service Request Successfully placed ');
         setmsg('Service Request Successfully placed');
       } else {
+        setmsg("Couldn't place Service Request");
         console.log("Couldn't place Service Request");
       }
     } catch (err) {
@@ -152,14 +170,14 @@ export default function ServiceRequest() {
                   <br />
                   <FormControl id="complaint-address">
                     <FormLabel>Sector</FormLabel>
-                    <Select
+                    <ChakraSelect
                       placeholder={S_sector}
                       onChange={handleSectorChange}
                     >
                       <option value="A">A</option>
                       <option value="B">B</option>
                       <option value="C">C</option>
-                    </Select>
+                    </ChakraSelect>
                     <FormLabel>Block</FormLabel>
                     <Input
                       placeholder={S_block}
@@ -167,60 +185,38 @@ export default function ServiceRequest() {
                       onChange={handleBlockChange}
                     ></Input>
                     <FormLabel>Quarter</FormLabel>
-                    <Select placeholder={S_qrtr} onChange={handleQrtrChange}>
+                    <ChakraSelect
+                      placeholder={S_qrtr}
+                      onChange={handleQrtrChange}
+                    >
                       <option value="1">1</option>
                       <option value="2">2</option>
                       <option value="3">3</option>
                       <option value="4">4</option>
-                    </Select>
+                    </ChakraSelect>
                   </FormControl>
                   <FormControl id="complaint-category">
                     <FormLabel>Category</FormLabel>
                     <Select
                       placeholder="Select Category"
+                      value={complaint_json}
+                      options={data}
                       onChange={handleCategoryChange}
-                    >
-                      <option value="Civil">Civil</option>
-                      <option value="Electrical">Electrical</option>
-                      <option value="Horticulture">Horticulture</option>
-                      <option value="Plumbing">Plumbing</option>
-                      <option value="misc">Miscellaneous</option>
-                    </Select>
+                      getOptionLabel={x => x.complaint}
+                      getOptionValue={x => x.complaint}
+                    ></Select>
                   </FormControl>
 
                   <FormControl id="subcategory">
                     <FormLabel>Complaint</FormLabel>
                     <Select
-                      placeholder="Select option"
+                      placeholder="Select Complaint"
                       onChange={handleSubCategoryChange}
-                    >
-                      <option value="testa">testa</option>
-                      <option value="testb">testb</option>
-                      <option value="testc">testc</option>
-                      <option value="testd">testd</option>
-                      <option value="testf">testf</option>
-                      <option value="testg">testg</option>
-                      <option value="testh">testh</option>
-                      <option value="teste">teste</option>
-                      <option value="testi">testi</option>
-                      <option value="testj">testj</option>
-                      <option value="testk">testk</option>
-                      <option value="testl">testl</option>
-                      <option value="testm">testm</option>
-                      <option value="testn">testn</option>
-                      <option value="testo">testo</option>
-                      <option value="testp">testp</option>
-                      <option value="testq">testq</option>
-                      <option value="testr">testr</option>
-                      <option value="tests">tests</option>
-                      <option value="testt">testt</option>
-                      <option value="testu">testu</option>
-                      <option value="testv">testv</option>
-                      <option value="testw">testw</option>
-                      <option value="testx">testx</option>
-                      <option value="testy">testy</option>
-                      <option value="testz">testz</option>
-                    </Select>
+                      value={sub_cat}
+                      options={subCatList}
+                      getOptionLabel={x => x.name}
+                      getOptionValue={x => x.code}
+                    ></Select>
                   </FormControl>
                   <FormControl id="description">
                     <FormLabel>Description</FormLabel>
