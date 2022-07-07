@@ -7,37 +7,8 @@ import User from "../model/userSchema.js";
 import authenticate from "../middleware/Authenticate.js";
 import authenticateadmin from "../middleware/AuthenticateAdmin.js";
 
-const complaintsHandler = new Map([
-  ["testa", "JE"],
-  ["testb", "SSE"],
-  ["testc", "JE"],
-  ["testd", "SSE"],
-  ["teste", "JE"],
-  ["testf", "JE"],
-  ["testg", "JE"],
-  ["testh", "SSE"],
-  ["testi", "JE"],
-  ["testj", "JE"],
-  ["testk", "SSE"],
-  ["testl", "JE"],
-  ["testm", "JE"],
-  ["testn", "SSE"],
-  ["testo", "JE"],
-  ["testp", "JE"],
-  ["testq", "SSE"],
-  ["testr", "JE"],
-  ["tests", "JE"],
-  ["testt", "SSE"],
-  ["testu", "JE"],
-  ["testv", "JE"],
-  ["testw", "SSE"],
-  ["testx", "JE"],
-  ["testy", "JE"],
-  ["testz", "SSE"],
-]);
 router.get("/", (req, res) => {
-  res.send("Ola Tanay");
-  console.log(complaintsHandler.get("testa"));
+  res.send("Welcome to RDSO IOW COMPL MANAGEMENT SYSTEM");
 });
 
 // GET method route
@@ -95,14 +66,6 @@ router.post("/admin/login", async (req, res) => {
         console.log(admin);
         res.send({ admin, token });
 
-        // const tasks_to_do = await Complaint.find({
-        //   $and: [{ asgnTO_ID: admin.AID }, { status: "pending" }],
-        // });
-
-        // console.log("Tasks for you : ");
-        // console.log(tasks_to_do);
-        // console.log("E N D");
-        // res.send(tasks_to_do);
         res.status(200).send("Success");
       } else {
         console.log("Wrong Password");
@@ -195,7 +158,6 @@ router.post("/user/login", async (req, res) => {
         await JSON.stringify(user);
         token = await user.generateAuthToken();
         console.log("Tokenn /routes/ -> " + token);
-        // res.cookie("jwtoken", token);
         console.log(user);
         res.send({ user, token });
       } else {
@@ -234,12 +196,10 @@ function findMinReq(tasks) {
 }
 
 router.get("/user/show/:EID", async (req, res) => {
-  // const { EID } = req.body;
   const EID = req.params.EID;
   try {
     const complaints = await Complaint.find({ EID });
     console.log(complaints);
-    // console.log(JSON.stringify(complaints));
     res.send(JSON.stringify(complaints));
   } catch (error) {
     console.log("Error Occured");
@@ -249,14 +209,14 @@ router.get("/user/show/:EID", async (req, res) => {
 router.post("/admin/remove", async (req, res) => {
   console.log("TO RMEOVE : " + req.body._id);
   const result = await Complaint.updateOne(
-    { _id : req.body._id },
+    { _id: req.body._id },
     {
       $set: {
-        adminRemoved: true
+        adminRemoved: true,
       },
     }
   );
-  res.json({result});
+  res.json({ result });
 });
 
 router.post("/user/dashboard/request", async (req, res) => {
@@ -271,6 +231,7 @@ router.post("/user/dashboard/request", async (req, res) => {
     category,
     subcategory,
     description,
+    Post,
   } = req.body;
 
   console.log(EID);
@@ -283,6 +244,7 @@ router.post("/user/dashboard/request", async (req, res) => {
   console.log(category);
   console.log(subcategory);
   console.log(description);
+  console.log("Post " + Post);
 
   const timestamp = Date();
   const status = "PENDING";
@@ -293,8 +255,7 @@ router.post("/user/dashboard/request", async (req, res) => {
   const feedback = "";
   const completedTime = "";
 
-  const post_to_assign_task = complaintsHandler.get(subcategory);
-  console.log("post ot assign task : " + post_to_assign_task);
+  console.log("post ot assign task : " + Post);
 
   try {
     const admin = await Admin.find({
@@ -325,13 +286,16 @@ router.post("/user/dashboard/request", async (req, res) => {
     asgnTO_name = admin[admin_id_with_min_req].name;
     asgnTO_desig = admin[admin_id_with_min_req].designation;
     asgnTO_contact = admin[admin_id_with_min_req].phone;
-    // working fine
   } catch (err) {
     console.log(err);
   }
 
   const adminRemoved = false;
   try {
+    if (asgnTO_ID === "") {
+      res.status(402).send("Error Occured, plz try again Later.");
+    }
+
     const complaint = new Complaint({
       EID,
       name,
@@ -356,20 +320,15 @@ router.post("/user/dashboard/request", async (req, res) => {
 
     await complaint.save();
 
-    res
-      .status(201)
-      .json({
-        message: "complaint registered successfully",
-        asgnTO_name,
-        asgnTO_desig,
-        asgnTO_contact,
-      });
+    res.status(201).json({
+      message: "complaint registered successfully",
+      asgnTO_name,
+      asgnTO_desig,
+      asgnTO_contact,
+    });
   } catch (err) {
     console.log(err);
   }
 });
 
 export default router;
-
-//cookie : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmJmZDkxNGM4MmUxMjExYTNjN2YxODUiLCJpYXQiOjE2NTY3ODI0NjF9.K1A4glG4Vch0VU8YQj_ZyX6aAhuQEXO7R08yUJEWCFQ
-//db     : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFSUQiOjkwODc2LCJpYXQiOjE2NTY5MTYwNTB9.xmrQAqRUqN5E5tnqDCOBpQg0uVzlb5Mhagq2StrEk1g
