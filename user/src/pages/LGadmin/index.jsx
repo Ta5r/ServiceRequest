@@ -22,10 +22,10 @@ import FadeInUp from '../../components/Animation/FadeInUp';
 export default function LoginAdmin() {
   const navigate = useNavigate();
   const [token, setToken] = useState('');
-  const [email, setemail] = useState('cd@gmail.com');
+  const [AID, setAID] = useState('20930132');
   const [password, setpassword] = useState('123456');
-  const [msg, setmsg] = useState('please fill your credentials');
-  const handleemailChange = e => setemail(e.target.value);
+  const [msg, setmsg] = useState('Please fill in your credentials');
+  const handleAIDChange = e => setAID(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
 
   useEffect(() => {
@@ -34,12 +34,12 @@ export default function LoginAdmin() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log(email);
+    console.log(AID);
     console.log(password);
 
     try {
       let dat = await axios.post('http://localhost:8000/admin/login', {
-        email,
+        AID,
         password,
       });
 
@@ -53,7 +53,7 @@ export default function LoginAdmin() {
         setmsg('Successful signin');
         setTimeout(() => {
           navigate('/admin/dashboard');
-        }, 3000);
+        }, 2000);
       } else {
         setmsg('INCORRECT CREDENTIALS');
       }
@@ -89,13 +89,13 @@ export default function LoginAdmin() {
             >
               <Stack spacing={4}>
                 <form onSubmit={handleSubmit}>
-                  <FormControl id="email">
-                    <FormLabel>Email address</FormLabel>
+                  <FormControl id="AID">
+                    <FormLabel>ADMIN ID</FormLabel>
                     <Input
                       type="text"
-                      id="email"
-                      value={email}
-                      onChange={handleemailChange}
+                      id="AID"
+                      value={AID}
+                      onChange={handleAIDChange}
                     />
                   </FormControl>
                   <FormControl id="password">

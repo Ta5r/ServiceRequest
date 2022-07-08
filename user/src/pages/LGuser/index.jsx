@@ -21,11 +21,11 @@ import FadeInUp from '../../components/Animation/FadeInUp';
 
 export default function LoginUser() {
   const navigate = useNavigate();
-  const [email, setemail] = useState('rajiv.signal@gmail.com');
+  const [EID, setEID] = useState('90875');
   const [password, setpassword] = useState('21062002');
   const [msg, setmsg] = useState('');
   const [token, setToken] = useState('');
-  const handleemailChange = e => setemail(e.target.value);
+  const handleEIDChange = e => setEID(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
 
   useEffect(() => {
@@ -34,12 +34,12 @@ export default function LoginUser() {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    console.log(email);
+    console.log(EID);
     console.log(password);
 
     try {
       let dat = await axios.post('http://localhost:8000/user/login', {
-        email,
+        EID,
         password,
       });
       console.log('data : ' + dat.data);
@@ -53,7 +53,7 @@ export default function LoginUser() {
         setmsg('SUCCEFULL SIGNIN !');
         setTimeout(() => {
           navigate('/user/dashboard');
-        }, 3000);
+        }, 2000);
       } else {
         setmsg('INCORRECT CREDENTIALS');
       }
@@ -86,13 +86,13 @@ export default function LoginUser() {
             >
               <Stack spacing={4}>
                 <form onSubmit={handleSubmit}>
-                  <FormControl id="email">
+                  <FormControl id="EID">
                     <FormLabel>Employee ID</FormLabel>
                     <Input
-                      id="email"
+                      id="EID"
                       type="text"
-                      value={email}
-                      onChange={handleemailChange}
+                      value={EID}
+                      onChange={handleEIDChange}
                     />
                   </FormControl>
                   <FormControl id="password">

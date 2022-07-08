@@ -1,6 +1,6 @@
 [
   {
-    "complaint": "Civil",
+    "complaint": "CIVIL",
     "subcats": [
       {
         "name": "carpenter for repair of doors/window",
@@ -57,7 +57,7 @@
     ]
   },
   {
-    "complaint": "Electrical",
+    "complaint": "ELECTRICAL",
     "subcats": [
       {
         "name": "AC service line",
@@ -138,7 +138,7 @@
     ]
   },
   {
-    "complaint": "Telecom",
+    "complaint": "TELECOM",
     "country_code": "ae",
     "url": "google.ae",
     "subcats": [
@@ -193,7 +193,7 @@
     ]
   },
   {
-    "complaint": "Internet",
+    "complaint": "INTERNET",
     "subcats": [
       {
         "name": "ADSL/Broad band",

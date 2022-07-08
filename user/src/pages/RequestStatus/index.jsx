@@ -1,15 +1,19 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import UserDBNavBar from '../../components/User/UserDBNavBar';
-import { Button, ChakraProvider, theme } from '@chakra-ui/react';
+import { Button, Text, ChakraProvider, theme } from '@chakra-ui/react';
 import SRCard from '../../components/User/SRCard';
 
 const RequestStatus = props => {
   const eid = props.eid;
-
+  
   const [S_EID, setEID] = useState('');
   const [S_name, setName] = useState('');
   const [complaints, setComplaints] = useState([]);
+  
+  // if(eid!==null) {
+  //   setEID(eid);
+  // }
 
   useEffect(() => {
     try {
@@ -54,7 +58,12 @@ const RequestStatus = props => {
       <Button bgcolor="red" m="2rem" onClick={handleLoad}>
         Show Requests
       </Button>
+
+<Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
+        Pending Requests
+        </Text>   
       {complaints.map(res => (
+      res.status.toLowerCase() == 'pending' ? 
         <SRCard
           sector={res.sector}
           block={res.block}
@@ -71,7 +80,30 @@ const RequestStatus = props => {
           category={res.category}
           asgnTO_contact={res.asgnTO_contact}
         />
-      ))}
+      :null))}
+
+<Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
+        Completed Requests
+        </Text>   
+      {complaints.map(res => (
+      res.status.toLowerCase() == 'completed' ? 
+        <SRCard
+          sector={res.sector}
+          block={res.block}
+          qrtr={res.qrtr}
+          completedTime={res.completedTime}
+          asgnTO_desig={res.asgnTO_desig}
+          feedback="Feedback"
+          asgnTO_ID={res.asgnTO_ID}
+          asgnTO_name={res.asgnTO_name}
+          timestamp={res.timestamp}
+          status={res.status}
+          description={res.description}
+          subcategory={res.subcategory}
+          category={res.category}
+          asgnTO_contact={res.asgnTO_contact}
+        />
+      :null))}
     </ChakraProvider>
   );
 };

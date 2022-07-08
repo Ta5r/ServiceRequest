@@ -9,7 +9,8 @@ const AuthenticateAdmin = async (req, res, next) => {
     const verifyToken = jwt.verify(token, SECRET_KEY);
 
     console.log("is");
-    console.log(verifyToken._id);
+    console.log(verifyToken.AID);
+    console.log(verifyToken);
     console.log("was");
     const rootAdmin = await Admin.findOne({
       AID: verifyToken.AID,

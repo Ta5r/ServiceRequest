@@ -33,7 +33,8 @@ const ServiceRequests = props => {
         Pending Requests
       </Text>
       {complaints.map(res =>
-        res.status.toLowerCase() == 'pending' ? (
+        res.status.toLowerCase() == 'pending' ? 
+        (
           <p>
             <ACard
               id={res._id}
@@ -53,7 +54,10 @@ const ServiceRequests = props => {
               feedback="Feedback"
             />
           </p>
-        ) : null
+        ) 
+        : (<Text
+          fontWeight={'bold'}
+          ml={"6rem"}>Nothing to show<br/><br/><br/></Text>)
       )}
       <Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
         Completed Requests
@@ -79,7 +83,9 @@ const ServiceRequests = props => {
               feedback="Feedback"
             />
           </p>
-        ) : null
+        ) : (<Text
+        fontWeight={'bold'}
+        ml={"6rem"}>Nothing to show<br/><br/><br/></Text>)
       )}
     </>
   );

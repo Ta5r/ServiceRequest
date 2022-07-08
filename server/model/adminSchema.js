@@ -4,7 +4,7 @@ const SECRET_KEY = "OWMRWLERTJFSNCYJANCSFGHASXZRWQURCVSFDDHJ";
 
 const adminSchema = new mongoose.Schema({
   AID: {
-    type: Number,
+    type: String,
     required: true,
   },
   name: {

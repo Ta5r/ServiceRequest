@@ -8,7 +8,7 @@ import authenticate from "../middleware/Authenticate.js";
 import authenticateadmin from "../middleware/AuthenticateAdmin.js";
 
 router.get("/", (req, res) => {
-  res.send("Welcome to RDSO IOW COMPL MANAGEMENT SYSTEM");
+  res.send("Welcome to RDSO-IOW COMPLAINT MANAGEMENT SYSTEM");
 });
 
 // GET method route
@@ -51,10 +51,17 @@ router.get("/admin/dashboard", authenticateadmin, async (req, res) => {
 });
 
 router.post("/admin/login", async (req, res) => {
-  const { email, password } = req.body;
+  // const { email, password } = req.body;
+  console.log(req.body);
+  const { AID, password } = req.body;
+  console.log("AID :"+AID);
+  // const email = AID;
   var tokenAdmin;
   try {
-    const admin = await Admin.findOne({ email });
+    // const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ AID });
+    console.log(admin);
+
     if (admin) {
       if (password == admin.password) {
         console.log("Successfullsignin");
@@ -147,10 +154,13 @@ router.post("/user/register", async (req, res) => {
 });
 router.post("/user/login", async (req, res) => {
   console.log(req.body);
-  const { email, password } = req.body;
+  const { EID, password } = req.body;
+  console.log("EID : "+EID);
+  // const { email, password } = req.body;
   var token;
   try {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ EID });
+    // const user = await User.findOne({ email });
     if (user) {
       if (password == user.password) {
         console.log("Successfullsignin");
@@ -255,31 +265,37 @@ router.post("/user/dashboard/request", async (req, res) => {
   const feedback = "";
   const completedTime = "";
 
-  console.log("post ot assign task : " + Post);
+  console.log("post to assign task : " + Post);
 
   try {
     const admin = await Admin.find({
       $and: [
         { sector },
         { department: category },
-        { designation: post_to_assign_task },
+        { designation: Post },
       ],
     });
+    console.log("quereid");
+    console.log(admin);
+    console.log("quereid");
     var tasks = [];
     for (var i = 0; i < admin.length; i++) {
-      console.log(admin[i].id);
+      console.log("admin[i].id"+admin[i].id);
       try {
         const complaint_for_adminID = await Complaint.find({
           asgnTO_ID: admin[i].AID,
         });
 
         tasks[i] = complaint_for_adminID.length;
-        console.log(tasks[i]);
+        console.log("tasks[i]"+tasks[i]);
       } catch (err) {
         console.log(err);
       }
     }
+
     const admin_id_with_min_req = findMinReq(tasks);
+    console.log("to assign to id" + admin_id_with_min_req);
+    console.log("to assign to AID" + admin[admin_id_with_min_req]);
     console.log("to assign to " + admin[admin_id_with_min_req].name);
 
     asgnTO_ID = admin[admin_id_with_min_req].AID;

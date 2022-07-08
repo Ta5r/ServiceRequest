@@ -50,6 +50,10 @@ export default function Footer() {
       <Box
         bg={useColorModeValue('gray.50', 'gray.900')}
         color={useColorModeValue('gray.700', 'gray.200')}
+        bottom={0}
+        left={0}
+        right={0}
+        position={'static'}
       >
         <Container
           as={Stack}

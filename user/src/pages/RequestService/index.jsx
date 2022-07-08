@@ -72,7 +72,6 @@ export default function ServiceRequest() {
       }).then(response => {
         response.json().then(response => {
           console.log(response);
-
           setEID(response.EID);
           setName(response.name);
           setdesignation(response.designation);
@@ -94,7 +93,7 @@ export default function ServiceRequest() {
   const handleSubmit = async event => {
     event.preventDefault();
     try {
-      const category = Category;
+      const category = Category.toUpperCase();
       const subcategory = SubCategory;
       const description = Description;
       const EID = S_EID;

@@ -55,9 +55,9 @@ const ACard = props => {
           bg="white"
           position="relative"
         >
-          <Grid templateColumns="repeat(7, 1fr)" gap={3}>
+          <Grid templateColumns="repeat(8, 1fr)" gap={3}>
             <GridItem w="100%" h="15" textAlign={'center'} fontWeight={'bold'}>
-              Mr.{name} ( {designation} ){' '}
+              Mr.{name} ({designation}){' '}
             </GridItem>
             <GridItem w="50%" h="15">
               <Text fontSize="18px">
@@ -72,6 +72,9 @@ const ACard = props => {
             </GridItem>
             <GridItem w="100%" h="15" textAlign={'center'}>
               {description}
+            </GridItem>
+            <GridItem w="100%" h="15" textAlign={'center'}>
+              {timestamp.slice(0,25)}
             </GridItem>
             <GridItem w="100%" h="15" textAlign={'center'}>
               {
