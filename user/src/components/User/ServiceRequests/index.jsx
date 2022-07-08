@@ -51,6 +51,7 @@ const ServiceRequests = props => {
               category={res.category}
               subcategory={res.subcategory}
               description={res.description}
+              OTP={res.OTP}
               feedback="Feedback"
             />
           </p>
@@ -80,6 +81,7 @@ const ServiceRequests = props => {
               category={res.category}
               subcategory={res.subcategory}
               description={res.description}
+              OTP={res.OTP}
               feedback="Feedback"
             />
           </p>

@@ -15,6 +15,7 @@ const SRCard = props => {
   const status = props.status.toUpperCase();
   const description = props.description;
   const subcategory = props.subcategory;
+  const OTP = props.OTP;
 
   if (completedTime === '') {
     completedTime = '-- --';
@@ -36,7 +37,7 @@ const SRCard = props => {
         bg={color}
         position="relative"
       >
-        <Grid templateColumns="repeat(7, 1fr)" gap={6}>
+        <Grid templateColumns="repeat(8, 1fr)" gap={6}>
           <GridItem w="100%" h="15">
             <Text fontWeight={'bold'} fontSize="18px">
               {asgnTO_desig}-{asgnTO_name}
@@ -59,6 +60,9 @@ const SRCard = props => {
           </GridItem>
           <GridItem w="100%" h="15" textAlign={'center'}>
             {description}
+          </GridItem>
+          <GridItem w="100%" h="15" textAlign={'center'}>
+            OTP:<br/>{OTP}
           </GridItem>
         </Grid>
         <br />

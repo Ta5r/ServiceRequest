@@ -79,6 +79,7 @@ const RequestStatus = props => {
           subcategory={res.subcategory}
           category={res.category}
           asgnTO_contact={res.asgnTO_contact}
+          OTP={res.OTP}
         />
       :null))}
 
@@ -102,6 +103,7 @@ const RequestStatus = props => {
           subcategory={res.subcategory}
           category={res.category}
           asgnTO_contact={res.asgnTO_contact}
+          OTP={res.OTP}
         />
       :null))}
     </ChakraProvider>

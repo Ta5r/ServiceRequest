@@ -292,12 +292,10 @@ router.post("/user/dashboard/request", async (req, res) => {
         console.log(err);
       }
     }
-
     const admin_id_with_min_req = findMinReq(tasks);
     console.log("to assign to id" + admin_id_with_min_req);
     console.log("to assign to AID" + admin[admin_id_with_min_req]);
     console.log("to assign to " + admin[admin_id_with_min_req].name);
-
     asgnTO_ID = admin[admin_id_with_min_req].AID;
     asgnTO_name = admin[admin_id_with_min_req].name;
     asgnTO_desig = admin[admin_id_with_min_req].designation;
@@ -311,7 +309,7 @@ router.post("/user/dashboard/request", async (req, res) => {
     if (asgnTO_ID === "") {
       res.status(402).send("Error Occured, plz try again Later.");
     }
-
+    const OTP = generateOTP();
     const complaint = new Complaint({
       EID,
       name,
@@ -332,6 +330,7 @@ router.post("/user/dashboard/request", async (req, res) => {
       feedback,
       completedTime,
       adminRemoved,
+      OTP
     });
 
     await complaint.save();
@@ -346,5 +345,9 @@ router.post("/user/dashboard/request", async (req, res) => {
     console.log(err);
   }
 });
+
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+}
 
 export default router;

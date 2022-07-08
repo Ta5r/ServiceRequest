@@ -8,6 +8,7 @@ import FadeInUp from '../../Animation/FadeInUp';
 
 const ACard = props => {
   const EID = props.EID;
+  const OTP = props.OTP
   const name = props.name;
   const designation = props.designation;
   const id = props.id;
@@ -24,7 +25,7 @@ const ACard = props => {
 
   const handleCloseReq = () => {
     var password = prompt('Password');
-    if (password == EID) {
+    if (password == OTP) {
       console.log('Can Close req : ' + id);
       axios
         .post('http://localhost:8000/admin/close', {
