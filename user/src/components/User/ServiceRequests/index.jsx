@@ -58,7 +58,7 @@ const ServiceRequests = props => {
         ) 
         : (<Text
           fontWeight={'bold'}
-          ml={"6rem"}>Nothing to show<br/><br/><br/></Text>)
+          ml={"6rem"}>Nothing to shoow<br/><br/><br/></Text>)
       )}
       <Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
         Completed Requests

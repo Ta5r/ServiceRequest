@@ -31,11 +31,9 @@ const AdminDashboard = () => {
   }, [S_AID]);
   return (
     <ChakraProvider theme={theme}>
-      <div style={{ backgroundColor: '#edf2f7' }}>
         <AdminDBNavbar name={S_name} sector={S_sector} />
         <ServiceRequests aid={S_AID} />
         <hr />
-      </div>
     </ChakraProvider>
   );
 };

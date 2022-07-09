@@ -43,8 +43,8 @@ function App() {
               </Heading>
               <Text fontSize={{ base: 'md', lg: 'lg' }} color={'gray.500'}>
                 This platform is an exclusive resource for residents of RDSO
-                Colony Lucknow. It provides a simple solution of placing serivce
-                requests.
+                Colony Lucknow. It provides a simple solution of placing service
+                requests to the IOW department.
               </Text>
               <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
                 <Link href="/user">

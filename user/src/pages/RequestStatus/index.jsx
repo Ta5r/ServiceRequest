@@ -11,10 +11,6 @@ const RequestStatus = props => {
   const [S_name, setName] = useState('');
   const [complaints, setComplaints] = useState([]);
   
-  // if(eid!==null) {
-  //   setEID(eid);
-  // }
-
   useEffect(() => {
     try {
       fetch('/user/dashboard/requestform', {
@@ -36,6 +32,8 @@ const RequestStatus = props => {
       console.log('Error occured ');
       console.log(err);
     }
+
+    
   }, []);
 
   const handleLoad = () => {
@@ -48,16 +46,11 @@ const RequestStatus = props => {
       console.log(err);
     }
   };
-  console.log('||');
-  console.log(complaints);
-  console.log('||');
 
   return (
     <ChakraProvider theme={theme}>
       <UserDBNavBar eid={S_EID} name={S_name} />
-      <Button bgcolor="red" m="2rem" onClick={handleLoad}>
-        Show Requests
-      </Button>
+      
 
 <Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
         Pending Requests
@@ -106,6 +99,9 @@ const RequestStatus = props => {
           OTP={res.OTP}
         />
       :null))}
+      <Button bgcolor="red" m="2rem" onClick={handleLoad}>
+        Show Requests
+      </Button>
     </ChakraProvider>
   );
 };

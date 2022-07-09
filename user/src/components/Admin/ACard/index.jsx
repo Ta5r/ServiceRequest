@@ -5,10 +5,10 @@ import { Link, Text, Button, ChakraProvider, theme } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
 import axios from 'axios';
 import FadeInUp from '../../Animation/FadeInUp';
+import AdminModalBox from '../../layouts/AdminModalBox';
 
 const ACard = props => {
-  const EID = props.EID;
-  const OTP = props.OTP
+  const OTP = props.OTP;
   const name = props.name;
   const designation = props.designation;
   const id = props.id;
@@ -16,12 +16,18 @@ const ACard = props => {
   const block = props.block;
   const qrtr = props.qrtr;
   const phone = props.phone;
-  const completedTime = props.completedTime;
-  const timestamp = props.timestamp;
+  const completedTime = props.completedTime.slice(0, 25);
+  const timestamp = props.timestamp.slice(0, 25);
   const status = props.status;
   const category = props.category;
   const subcategory = props.subcategory;
   const description = props.description;
+  const today = new Date();
+  const complaintDate = new Date(props.timestamp);
+  const days =  Math.floor((today.getTime() - complaintDate.getTime()) / (1000*3600*24));
+  const hours = Math.floor((today.getTime() - complaintDate.getTime()) / (1000*3600));
+  const mins = Math.floor((today.getTime() - complaintDate.getTime()) / (1000*60));
+
 
   const handleCloseReq = () => {
     var password = prompt('Password');
@@ -49,40 +55,50 @@ const ACard = props => {
           my="2rem"
           px="2rem"
           mx="4rem"
-          width="90vw"
+          width="60vw"
           borderRadius="16px"
           boxShadow=" 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
           height={{ sm: '150px' }}
           bg="white"
           position="relative"
         >
-          <Grid templateColumns="repeat(8, 1fr)" gap={3}>
-            <GridItem w="100%" h="15" textAlign={'center'} fontWeight={'bold'}>
+          <Grid templateColumns="repeat(7, 1fr)" gap={6}>
+            <GridItem w="100%" textAlign={'center'} fontWeight={'bold'}>
               Mr.{name} ({designation}){' '}
             </GridItem>
-            <GridItem w="50%" h="15">
+            <GridItem w="60%">
               <Text fontSize="18px">
                 {sector}-{block}/{qrtr}
               </Text>
             </GridItem>
-            <GridItem w="50%" h="15" textAlign={'center'}>
+            <GridItem w="100%" textAlign={'center'}>
               <Link href={`tel:${phone}`}>{phone}</Link>
             </GridItem>
-            <GridItem w="100%" h="15" textAlign={'center'}>
+            <GridItem w="100%" textAlign={'center'}>
               {subcategory}
             </GridItem>
-            <GridItem w="100%" h="15" textAlign={'center'}>
-              {description}
+            <GridItem w="75%" textAlign={'center'}>
+              {(days!==0)?(<p>{days}days ago</p>):((hours===0)?<p>{mins} min ago</p>:<p>{hours} hours ago</p>)}
             </GridItem>
-            <GridItem w="100%" h="15" textAlign={'center'}>
-              {timestamp.slice(0,25)}
+
+            <GridItem w="100%" textAlign={'center'}>
+              <AdminModalBox
+                design={designation}
+                sector={sector}
+                block={block}
+                qrtr={qrtr}
+                timestamp={timestamp}
+                completedTime={completedTime}
+                description={description}
+                category={category}
+                subcategory={subcategory}
+                phone={phone}
+                status={status}
+                name={name}
+                designation={designation}
+              />
             </GridItem>
-            <GridItem w="100%" h="15" textAlign={'center'}>
-              {
-                (status.toLowerCase() == 'pending')?"Pending":completedTime.slice(0,25)
-              }
-            </GridItem>
-            <GridItem w="100%" h="15" textAlign={'center'}>
+            <GridItem w="100%" textAlign={'center'}>
               {status.toLowerCase() == 'pending' ? (
                 <Button onClick={handleCloseReq}>Close Request</Button>
               ) : (
