@@ -9,7 +9,9 @@ import AdminDashboard from './pages/admin-dashboard';
 import RequestService from './pages/RequestService';
 import UserDashBoard from './pages/UserDashBoard';
 import RequestStatus from './pages/RequestStatus';
+import Master from './pages/Master';
 const container = document.getElementById('root');
+
 
 const root = ReactDOM.createRoot(container);
 
@@ -40,6 +42,11 @@ const routing = (
           path="/user/dashboard/status"
           component={RequestStatus}
           element={<RequestStatus />}
+        />
+        <Route
+          path="/master"
+          component={Master}
+          element={<Master />}
         />
       </Routes>
     </div>

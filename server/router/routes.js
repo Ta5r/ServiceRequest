@@ -11,6 +11,14 @@ router.get("/", (req, res) => {
   res.send("Welcome to RDSO-IOW COMPLAINT MANAGEMENT SYSTEM");
 });
 
+router.get("/master", async (req, res) => {
+ try {
+  const complaint = await Complaint.find();
+  res.json(complaint);
+ } catch (error) {
+  console.log(error);
+ }
+});
 // GET method route
 router.post("/admin/register", async (req, res) => {
   const {

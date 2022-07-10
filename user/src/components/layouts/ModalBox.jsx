@@ -15,10 +15,31 @@ import { Text, Link, Box } from '@chakra-ui/react';
 import React from 'react';
 import { BiPhoneCall } from 'react-icons/bi';
 import { GrUserWorker } from 'react-icons/gr';
- 
+
 const ModalBox = props => {
-  const timestamp = props.timestamp;
   const completedTime = props.completedTime;
+  const timestamp = props.timestamp.slice(0, 25);
+  const timestamp2 = new Date(props.timestamp);
+  const completeTime = new Date(props.completedTime);
+
+  const diff_days = Math.floor(
+    (completeTime.getTime() - timestamp2.getTime()) / (1000 * 3600 * 24)
+  );
+  const diff_hours = Math.floor(
+    (completeTime.getTime() - timestamp2.getTime()) / (1000 * 3600)
+  );
+  const diff_mins = Math.floor(
+    (completeTime.getTime() - timestamp2.getTime()) / (1000 * 60)
+  );
+
+  if (diff_days !== 0) {
+    console.log(diff_days + ' days');
+  } else if (diff_hours === 0) {
+    console.log(diff_mins + ' mins');
+  } else {
+    console.log(diff_hours + ' hours');
+  }
+
   const description = props.description;
   const category = props.category;
   const subcategory = props.subcategory;
@@ -26,7 +47,7 @@ const ModalBox = props => {
   const phone = props.phone;
   const status = props.status;
   const name = 'Mr. ' + props.name;
-  const status_color = (status==="COMPLETED")?"blue.200":"yellow.300";
+  const status_color = status === 'COMPLETED' ? 'blue.200' : 'yellow.300';
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -60,59 +81,90 @@ const ModalBox = props => {
                 <Text fontWeight={'bold'}>Completed At</Text>
                 <br />
                 {completedTime ? (
-                  <p>{completedTime}</p>
+                  <Text>{completedTime}</Text>
                 ) : (
-                  <p>Not yet completed</p>
+                  <Text>Not yet completed</Text>
                 )}
               </GridItem>
             </Grid>
+
             <Box
-            mt={"2rem"}
-            display={"flex"}
-            flexDirection={"row"}
-            fontSize={"18px"}
-            bgColor={"#e5e6e7"}
-            justifyContent={"center"}
+              mt={'2rem'}
+              display={'flex'}
+              flexDirection={'row'}
+              fontSize={'18px'}
+              bgColor={'#e5e6e7'}
+              justifyContent={'center'}
             >
-            <Text fontWeight={'bold'} fontSize="18px"pr={"0.5rem"}>
-              OTP 
-            </Text>
-            {OTP}</Box>
+              <Text fontWeight={'bold'} fontSize="18px" pr={'0.5rem'}>
+                OTP
+              </Text>
+              {OTP}
+            </Box>
 
             <Grid templateColumns="repeat(2, 1fr)" gap={2} pb={'2rem'}>
               <GridItem w="100%" h="10" py={'2rem'}>
-                <Text fontWeight={'bold'}>
+                <Text fontWeight={'bold'}></Text>
+                <Text display={'flex'} flexDirection={'row'}>
+                  <Text pr={'0.5rem'}>
+                    <GrUserWorker />
                   </Text>
-                <Text
-                  display={'flex'}
-                  flexDirection={'row'}>
-                    <Text pr={"0.5rem"}>
-                  <GrUserWorker />
-                    </Text>
                   {name}
                 </Text>
               </GridItem>
               <GridItem w="100%" h="10" py={'2rem'}>
-                <Text fontWeight={'bold'}>
-                  </Text>
+                <Text fontWeight={'bold'}></Text>
                 <Link
                   href={`tel:${phone}`}
                   display={'flex'}
                   flexDirection={'row'}
                 >
-                  <Text pr={"0.5rem"}>
-                  <BiPhoneCall fontSize={'20px'} />
+                  <Text pr={'0.5rem'}>
+                    <BiPhoneCall fontSize={'20px'} />
                   </Text>
                   {phone}
                 </Link>
               </GridItem>
             </Grid>
             <Grid bgColor="#e6e7e8">
-              <GridItem w="100%" py={'2rem'} textAlign={'center'} verticalAlign={'middle'} bgColor={status_color}> 
+              <GridItem
+                w="100%"
+                py={'2rem'}
+                textAlign={'center'}
+                verticalAlign={'middle'}
+                bgColor={status_color}
+              >
                 <Text fontWeight={'bold'} fontSize={'20px'}>
-                {status}</Text>
+                  {status}
+                </Text>
               </GridItem>
             </Grid>
+            {status.toUpperCase() === 'COMPLETED' ? (
+              <Grid>
+                <GridItem
+                  w="100%"
+                  py={'2rem'}
+                  textAlign={'center'}
+                  verticalAlign={'middle'}
+                  bgColor={'#e5e6e7'}
+                >
+                  Your Request was attended and completed in
+                  {diff_days !== 0 ? (
+                    <Text fontSize={'lg'} fontWeight={'bold'}>
+                      {diff_days} days
+                    </Text>
+                  ) : diff_hours === 0 ? (
+                    <Text fontSize={'lg'} fontWeight={'bold'}>
+                      {diff_mins} mins
+                    </Text>
+                  ) : (
+                    <Text fontSize={'lg'} fontWeight={'bold'}>
+                      {diff_hours} hours
+                    </Text>
+                  )}
+                </GridItem>
+              </Grid>
+            ) : null}
           </ModalBody>
 
           <ModalFooter>

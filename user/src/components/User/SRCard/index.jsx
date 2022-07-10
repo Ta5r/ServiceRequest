@@ -21,6 +21,13 @@ const SRCard = props => {
   const phone = props.asgnTO_contact;
   const category = props.category;
 
+
+  const today = new Date();
+  const complaintDate = new Date(props.timestamp);
+  const days =  Math.floor((today.getTime() - complaintDate.getTime()) / (1000*3600*24));
+  const hours = Math.floor((today.getTime() - complaintDate.getTime()) / (1000*3600));
+  const mins = Math.floor((today.getTime() - complaintDate.getTime()) / (1000*60));
+
   if (completedTime === '') {
     completedTime = '-- --';
   }
@@ -66,15 +73,17 @@ const SRCard = props => {
             </Link>
           </GridItem>
           <GridItem w="100%" textAlign={'center'}>
+            <Text fontWeight={'bold'}>Request</Text>
             {subcategory}
           </GridItem>
           <GridItem w="100%" textAlign={'center'}>
             {timestamp.slice(4, 16)}
+            {(days!==0)?(<p>{days}days ago</p>):((hours===0)?<p>{mins} min ago</p>:<p>{hours} hours ago</p>)}
           </GridItem>
-          <GridItem w="50%" textAlign={'center'}>
+          <GridItem w="50%" textAlign={'center'} fontWeight={'bold'}>
             OTP:
             <br />
-            <b>{OTP}</b>
+            {OTP}
           </GridItem>
           <ModalBox
             status={status}

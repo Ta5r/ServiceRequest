@@ -99,9 +99,10 @@ const RequestStatus = props => {
           OTP={res.OTP}
         />
       :null))}
-      <Button bgcolor="red" m="2rem" onClick={handleLoad}>
+      <Button bgcolor="red" mx="10rem" my={"1rem"} mb={"7rem"} onClick={handleLoad}>
         Show Requests
       </Button>
+      <br/>
     </ChakraProvider>
   );
 };
