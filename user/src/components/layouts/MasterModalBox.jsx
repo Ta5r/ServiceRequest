@@ -8,42 +8,87 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
+  Input,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Text, Link, Box } from '@chakra-ui/react';
-
 import React from 'react';
 import { BiPhoneCall } from 'react-icons/bi';
 import { GrUserWorker } from 'react-icons/gr';
 import { useState } from 'react';
 
-const ModalBox = props => {
-  const completedTime = props.completedTime;
+const MasterModalBox = props => {
+  const complaintID = props.id;
+  const EID = props.EID;
+  const name = 'Mr. ' + props.name;
+  const designation = props.designation;
+  const sector = props.sector;
+  const block = props.block;
+  const qrtr = props.qrtr;
+  const phone = props.phone;
   const timestamp = props.timestamp.slice(0, 25);
+  const category = props.category;
+  const subcategory = props.subcategory;
+  const description = props.description;
+  const status = props.status;
+  const asgnTO_ID = props.asgnTO_ID;
+  const asgnTO_name = props.asgnTO_name;
+  const asgnTO_contact = props.asgnTO_contact;
+  const asgnTO_desig = props.asgnTO_desig;
+  const feedback = props.feedback;
+  const completedTime = props.completedTime.slice(0, 25);
+  const OTP = props.OTP;
+  const adminRemoved = props.adminRemoved;
+
+  // --------------------------------------------
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    console.log('escalate' + escAID);
+    console.log(complaintID);
+    const AID = escAID;
+    const newAdmin = await axios.post('http://localhost:8000/get/admin', {
+      AID,
+    });
+    console.log(newAdmin.data);
+
+    const result = await axios.post('http://localhost:8000/escalate', {
+      complaintID,
+      asgnTO_ID: newAdmin.data.AID,
+      asgnTO_name: newAdmin.data.name,
+      asgnTO_contact: newAdmin.data.phone,
+      asgnTO_desig: newAdmin.data.designation,
+    });
+    console.log(result);
+  };
+  const [escAID, setEscAID] = useState('');
+  const handleEscAIDChange = e => setEscAID(e.target.value);
+
+  // --------------------------------------------
+
   const timestamp2 = new Date(props.timestamp);
   const completeTime = new Date(props.completedTime);
   const cid = props.cID;
   const [msg, setMsg] = useState(props.status);
 
   const removeReq = async () => {
-    console.log("To Remove"+cid);
+    console.log('To Remove' + cid);
     try {
       let dat = await axios.post('http://localhost:8000/remove', {
-        cid
+        cid,
       });
       console.log(dat.data);
-      if(dat.status=== 200){
-        setMsg("Removed");
-      }
-      else{
-        setMsg("urrghh");
+      if (dat.status === 200) {
+        setMsg('Removed');
+      } else {
+        setMsg('urrghh');
       }
     } catch (err) {
       console.log('Error occured ');
       console.log(err);
     }
-  }
+  };
 
   const diff_days = Math.floor(
     (completeTime.getTime() - timestamp2.getTime()) / (1000 * 3600 * 24)
@@ -55,26 +100,36 @@ const ModalBox = props => {
     (completeTime.getTime() - timestamp2.getTime()) / (1000 * 60)
   );
 
-  if (diff_days !== 0) {
-    console.log(diff_days + ' days');
-  } else if (diff_hours === 0) {
-    console.log(diff_mins + ' mins');
-  } else {
-    console.log(diff_hours + ' hours');
-  }
-
-  const description = props.description;
-  const category = props.category;
-  const subcategory = props.subcategory;
-  const OTP = props.OTP;
-  const phone = props.phone;
-  const status = props.status;
-  const name = 'Mr. ' + props.name;
   const status_color = status === 'COMPLETED' ? 'blue.200' : 'yellow.300';
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button onClick={onOpen}>Details</Button>
+      <Box
+        onClick={onOpen}
+        py="3rem"
+        px="2rem"
+        width="20vw"
+        borderRadius="16px"
+        boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
+        height={{ sm: '300px' }}
+        _hover={{
+          boxShadow:
+            '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+        }}
+        position="relative"
+      >
+        {asgnTO_name}({asgnTO_desig}) , {asgnTO_contact} <br />
+        <br />
+        {/* {timestamp}<br/> {completedTime}, <br /> */}
+        {/* <b>name</b> : {name}({designation})<br /> */}
+        <b>Phone</b> : {phone}, <br />
+        <b>Address</b> : {sector}-{block}/{qrtr}, <br />
+        <b>Status</b> : {status}, <br />
+        <b>Complaint type</b> : {category} || {subcategory}, <br />
+        {(feedback)?(
+        <p><b>Feedback</b> : {feedback}, <br /></p>
+        ):null}
+      </Box>
 
       <Modal isOpen={isOpen} onClose={onClose} borderRadius={'15px'}>
         <ModalOverlay
@@ -93,7 +148,6 @@ const ModalBox = props => {
               Description
             </Text>
             <Text pb={'4rem'}>{description}</Text>
-
             <Grid templateColumns="repeat(2, 1fr)" gap={2} py={'2rem'}>
               <GridItem w="100%" h="10">
                 <Text fontWeight={'bold'}>Placed At</Text>
@@ -110,7 +164,6 @@ const ModalBox = props => {
                 )}
               </GridItem>
             </Grid>
-
             <Box
               mt={'2rem'}
               display={'flex'}
@@ -124,9 +177,10 @@ const ModalBox = props => {
               </Text>
               {OTP}
             </Box>
-
-            <Grid templateColumns="repeat(2, 1fr)" gap={2} pb={'2rem'}>
-              <GridItem w="100%" h="10" py={'2rem'}>
+            <br />
+            By
+            <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+              <GridItem w="100%" h="10">
                 <Text fontWeight={'bold'}></Text>
                 <Text display={'flex'} flexDirection={'row'}>
                   <Text pr={'0.5rem'}>
@@ -135,7 +189,7 @@ const ModalBox = props => {
                   {name}
                 </Text>
               </GridItem>
-              <GridItem w="100%" h="10" py={'2rem'}>
+              <GridItem w="100%" h="10">
                 <Text fontWeight={'bold'}></Text>
                 <Link
                   href={`tel:${phone}`}
@@ -146,6 +200,31 @@ const ModalBox = props => {
                     <BiPhoneCall fontSize={'20px'} />
                   </Text>
                   {phone}
+                </Link>
+              </GridItem>
+            </Grid>
+            To,
+            <Grid templateColumns="repeat(2, 1fr)" gap={2}>
+              <GridItem w="100%" h="10">
+                <Text fontWeight={'bold'}></Text>
+                <Text display={'flex'} flexDirection={'row'}>
+                  <Text pr={'0.5rem'}>
+                    <GrUserWorker />
+                  </Text>
+                  {asgnTO_name}
+                </Text>
+              </GridItem>
+              <GridItem w="100%" h="10">
+                <Text fontWeight={'bold'}></Text>
+                <Link
+                  href={`tel:${asgnTO_contact}`}
+                  display={'flex'}
+                  flexDirection={'row'}
+                >
+                  <Text pr={'0.5rem'}>
+                    <BiPhoneCall fontSize={'20px'} />
+                  </Text>
+                  {asgnTO_contact}
                 </Link>
               </GridItem>
             </Grid>
@@ -188,13 +267,30 @@ const ModalBox = props => {
                 </GridItem>
               </Grid>
             ) : null}
+
+            {
+              status.toUpperCase() === 'PENDING' ? (
+                <form onSubmit={handleSubmit}>
+              <Input
+                type="text"
+                placeholder="ID to transfer task"
+                id="escAID"
+                value={escAID}
+                onChange={handleEscAIDChange}
+              />
+              <Button type="submit">Escalate</Button>
+            </form>
+              ) : null
+            }
           </ModalBody>
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost" onClick={removeReq}>Remove</Button>
+            <Button variant="ghost" onClick={removeReq}>
+              Remove
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -202,4 +298,4 @@ const ModalBox = props => {
   );
 };
 
-export default ModalBox;
+export default MasterModalBox;

@@ -85,6 +85,10 @@ const complaintSchema = new mongoose.Schema({
     type: Boolean,
     required: false,
   },
+  master: {
+    type: Boolean,
+    required: false,
+  },
   OTP:{
     type: Number,
     required: true,

@@ -73,6 +73,7 @@ const RequestStatus = props => {
           category={res.category}
           asgnTO_contact={res.asgnTO_contact}
           OTP={res.OTP}
+          complaintID = {res._id}
         />
       :null))}
 

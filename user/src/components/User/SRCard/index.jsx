@@ -4,10 +4,14 @@ import { Link, Text, Button } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
 import ModalBox from '../../layouts/ModalBox';
 import FadeInUp from '../../Animation/FadeInUp';
+import axios from 'axios';
+import { useState } from 'react';
 
 const SRCard = props => {
   var color = 'white';
   var statusColor = 'blue.200';
+
+  const [report,setReport]=useState("Report");
 
   var completedTime = props.completedTime.slice(0, 25);
   const asgnTO_desig = props.asgnTO_desig;
@@ -20,6 +24,7 @@ const SRCard = props => {
   const OTP = props.OTP;
   const phone = props.asgnTO_contact;
   const category = props.category;
+  const complaintID = props.complaintID;
 
 
   const today = new Date();
@@ -34,6 +39,19 @@ const SRCard = props => {
   if (status === 'PENDING') {
     statusColor = 'yellow.300';
   }
+
+  const reportToMaster = async () => {
+    var feedback = prompt('Feedback');
+    var dat = await axios.post("http://localhost:8000/report",{
+      complaintID,
+      feedback
+    });
+    if(dat.status==200){
+      setReport("Reported");
+    }
+    console.log(dat);
+  }
+
 
   return (
     <FadeInUp>
@@ -85,6 +103,8 @@ const SRCard = props => {
             <br />
             {OTP}
           </GridItem>
+          <GridItem w="100%">
+
           <ModalBox
             status={status}
             name={asgnTO_name}
@@ -95,7 +115,11 @@ const SRCard = props => {
             description={description}
             category={category}
             subcategory={subcategory}
-          />
+            cID = {complaintID}
+            />
+            <br/>
+          <Button mt={"0.75rem"} onClick={reportToMaster}>{report}</Button>
+            </GridItem>
         </Grid>
         <br />
         <br />

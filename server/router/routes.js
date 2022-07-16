@@ -12,12 +12,95 @@ router.get("/", (req, res) => {
 });
 
 router.get("/master", async (req, res) => {
- try {
-  const complaint = await Complaint.find();
-  res.json(complaint);
- } catch (error) {
-  console.log(error);
- }
+  try {
+    const complaint = await Complaint.find();
+    res.json(complaint);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/get/admin", async (req, res) => {
+ try{
+
+   const allAdmins = await Admin.find();
+   res.status(200).json(allAdmins);
+  }catch(e)
+  {
+    console.log(e);
+  }
+});
+
+router.post("/get/admin", async (req, res) => {
+  try {
+    const { AID } = req.body;
+    console.log("AID : " + req.body.aid);
+    console.log("AID : " + AID);
+    const dat = await Admin.findOne({ AID });
+    console.log(dat);
+    res.status(200).json(dat);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.post("/escalate", async (req, res) => {
+  try {
+    const { complaintID,asgnTO_ID, asgnTO_name, asgnTO_contact, asgnTO_desig } = req.body;
+    console.log("\\");
+    console.log(req.body);
+    console.log("\\");
+    const dat = await Complaint.updateOne(
+      { _id: req.body.complaintID },
+      {
+        $set: {
+          master: false,
+          asgnTO_ID,
+          asgnTO_name,
+          asgnTO_contact,
+          asgnTO_desig,
+        },
+      }
+    );
+    res.json({ dat });
+    console.log(dat);
+    // res.status(200).json(dat);
+  } catch (error) {
+    console.error(error);
+  }
+});
+router.post("/report", async (req, res) => {
+  try {
+    const dat = await Complaint.updateOne(
+      { _id: req.body.complaintID },
+      {
+        $set: {
+          master: true,
+          feedback: req.body.feedback,
+        },
+      }
+    );
+    res.json({ dat });
+    console.log(dat);
+    // res.status(200).json(dat);
+  } catch (error) {
+    console.error(error);
+  }
+});
+router.post("/remove", async (req, res) => {
+  let removedData = "";
+  const { cid } = req.body;
+  console.log("removing : " + cid);
+  try {
+    removedData = await Complaint.findOneAndDelete({
+      _id: cid,
+    });
+    res.status(200).json({ message: "Complaint request removed successfully" });
+    console.log(removedData);
+  } catch (error) {
+    console.error(error);
+    console.log(error);
+  }
 });
 // GET method route
 router.post("/admin/register", async (req, res) => {
@@ -62,7 +145,7 @@ router.post("/admin/login", async (req, res) => {
   // const { email, password } = req.body;
   console.log(req.body);
   const { AID, password } = req.body;
-  console.log("AID :"+AID);
+  console.log("AID :" + AID);
   // const email = AID;
   var tokenAdmin;
   try {
@@ -104,7 +187,6 @@ router.post("/admin/close", async (req, res) => {
       $set: {
         status: "COMPLETED",
         completedTime: nowTime,
-        adminRemoved: false, //this is a temporary arrangement for old schema based registered complaints
       },
     }
   );
@@ -163,7 +245,7 @@ router.post("/user/register", async (req, res) => {
 router.post("/user/login", async (req, res) => {
   console.log(req.body);
   const { EID, password } = req.body;
-  console.log("EID : "+EID);
+  console.log("EID : " + EID);
   // const { email, password } = req.body;
   var token;
   try {
@@ -277,25 +359,21 @@ router.post("/user/dashboard/request", async (req, res) => {
 
   try {
     const admin = await Admin.find({
-      $and: [
-        { sector },
-        { department: category },
-        { designation: Post },
-      ],
+      $and: [{ sector }, { department: category }, { designation: Post }],
     });
     console.log("quereid");
     console.log(admin);
     console.log("quereid");
     var tasks = [];
     for (var i = 0; i < admin.length; i++) {
-      console.log("admin[i].id"+admin[i].id);
+      console.log("admin[i].id" + admin[i].id);
       try {
         const complaint_for_adminID = await Complaint.find({
           asgnTO_ID: admin[i].AID,
         });
 
         tasks[i] = complaint_for_adminID.length;
-        console.log("tasks[i]"+tasks[i]);
+        console.log("tasks[i]" + tasks[i]);
       } catch (err) {
         console.log(err);
       }
@@ -338,7 +416,8 @@ router.post("/user/dashboard/request", async (req, res) => {
       feedback,
       completedTime,
       adminRemoved,
-      OTP
+      master: false,
+      OTP,
     });
 
     await complaint.save();
@@ -356,6 +435,6 @@ router.post("/user/dashboard/request", async (req, res) => {
 
 const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000);
-}
+};
 
 export default router;
