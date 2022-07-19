@@ -29,11 +29,12 @@ const ServiceRequests = props => {
 
   return (
     <>
+    
       <Text fontWeight={'bold'} fontSize="38px" my="4rem" mx="5rem">
         Pending Requests
       </Text>
       {complaints.map(res =>
-        res.status.toLowerCase() == 'pending' ? 
+        res.status.toLowerCase() === 'pending' && res.adminRemoved === false ? 
         (
           <p>
             <ACard
@@ -47,6 +48,7 @@ const ServiceRequests = props => {
               phone={res.phone}
               completedTime={res.completedTime}
               timestamp={res.timestamp}
+              adminRemoved = {res.adminRemoved}
               status={res.status}
               category={res.category}
               subcategory={res.subcategory}
@@ -64,7 +66,7 @@ const ServiceRequests = props => {
         Completed Requests
       </Text>
       {complaints.map(res =>
-        res.status.toLowerCase() == 'completed' && res.adminRemoved == false ? (
+        res.status.toLowerCase() === 'completed' && res.adminRemoved === false ? (
           <p>
             <ACard
               id={res._id}

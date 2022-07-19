@@ -11,12 +11,13 @@ import {
 } from '@chakra-ui/react';
 import { Grid, GridItem } from '@chakra-ui/react';
 import { Text, Link, Box } from '@chakra-ui/react';
-
+import axios from 'axios';
 import React from 'react';
 import { BiPhoneCall } from 'react-icons/bi';
 import { GrUserWorker } from 'react-icons/gr';
 
 const AdminModalBox = props => {
+  const id = props.id;
   const timestamp = props.timestamp;
   const completedTime = props.completedTime;
   const description = props.description;
@@ -31,6 +32,15 @@ const AdminModalBox = props => {
   const name = 'Mr. ' + props.name;
   const status_color = status === 'COMPLETED' ? 'blue.200' : 'yellow.300';
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const removeReq = () => {axios
+    .post('http://localhost:8000/admin/remove', {
+      _id:id,
+    })
+    .then(res => {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    });};
   return (
     <>
       <Button onClick={onOpen}>Details</Button>
@@ -74,7 +84,7 @@ const AdminModalBox = props => {
                   <Text pr={'0.5rem'}>
                     <GrUserWorker />
                   </Text>
-                  {name} <br/>({designation})
+                  {name} <br />({designation})
                 </Text>
               </GridItem>
               <GridItem w="100%" h="10" py={'2rem'}>
@@ -127,6 +137,9 @@ const AdminModalBox = props => {
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close Panel
+            </Button>
+            <Button colorScheme="blue" mr={3} onClick={removeReq}>
+              Remove
             </Button>
           </ModalFooter>
         </ModalContent>

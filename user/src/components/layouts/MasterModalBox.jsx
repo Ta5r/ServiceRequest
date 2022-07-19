@@ -20,9 +20,10 @@ import { useState } from 'react';
 
 const MasterModalBox = props => {
   const complaintID = props.id;
-  const EID = props.EID;
+  // const EID = props.EID;
+  // const designation = props.designation;
+  // const asgnTO_ID = props.asgnTO_ID;
   const name = 'Mr. ' + props.name;
-  const designation = props.designation;
   const sector = props.sector;
   const block = props.block;
   const qrtr = props.qrtr;
@@ -32,14 +33,14 @@ const MasterModalBox = props => {
   const subcategory = props.subcategory;
   const description = props.description;
   const status = props.status;
-  const asgnTO_ID = props.asgnTO_ID;
   const asgnTO_name = props.asgnTO_name;
   const asgnTO_contact = props.asgnTO_contact;
   const asgnTO_desig = props.asgnTO_desig;
   const feedback = props.feedback;
   const completedTime = props.completedTime.slice(0, 25);
   const OTP = props.OTP;
-  const adminRemoved = props.adminRemoved;
+  // const adminRemoved = props.adminRemoved;
+  const adminRemoved = (props.adminRemoved)?"REMOVED BY ENGINEER":"";
 
   // --------------------------------------------
 
@@ -237,7 +238,7 @@ const MasterModalBox = props => {
                 bgColor={status_color}
               >
                 <Text fontWeight={'bold'} fontSize={'20px'}>
-                  {msg.toUpperCase()}
+                  {msg.toUpperCase()}<br/>{adminRemoved}
                 </Text>
               </GridItem>
             </Grid>

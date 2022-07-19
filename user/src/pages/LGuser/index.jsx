@@ -23,8 +23,9 @@ export default function LoginUser() {
   const navigate = useNavigate();
   const [EID, setEID] = useState('90875');
   const [password, setpassword] = useState('21062002');
-  const [msg, setmsg] = useState('');
+  const [msg, setmsg] = useState('Please fill in your credentials');
   const [token, setToken] = useState('');
+  const [stat, setStat] = useState('Sign in');
   const handleEIDChange = e => setEID(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
 
@@ -51,13 +52,20 @@ export default function LoginUser() {
       console.log('status : ' + dat.status);
       if (dat.status === 200) {
         setmsg('SUCCEFULL SIGNIN !');
+        setStat('Signin successful');
         setTimeout(() => {
           navigate('/user/dashboard');
         }, 2000);
       } else {
+        setStat('Please Try Again');
         setmsg('INCORRECT CREDENTIALS');
       }
     } catch (error) {
+      setStat('Please Try Again');
+      setTimeout(() => {
+        setStat('Sign in');
+        setmsg('Please fill in your credentials')
+      }, 3000)
       console.log(error);
     }
   };
@@ -121,7 +129,7 @@ export default function LoginUser() {
                       }}
                       type="submit"
                     >
-                      Sign in
+                      {stat}
                     </Button>
                   </Stack>
                 </form>

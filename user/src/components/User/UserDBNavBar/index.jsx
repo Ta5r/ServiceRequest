@@ -94,7 +94,7 @@ export default function UserDBNavbar(props) {
                   {name}
                   <br />
                 </Text>
-                <MenuItem>Edit Profile</MenuItem>
+                {/* <MenuItem>Edit Profile</MenuItem> */}
                 <MenuDivider />
                 <MenuItem onClick={handleLogout}>Log Out </MenuItem>
               </MenuList>

@@ -6,78 +6,24 @@ import {
   Button,
   Text,
   Box,
-  Heading,
+  Heading, 
+  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Stack,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 import MasterModalBox from '../../components/layouts/MasterModalBox';
 import { SimpleGrid } from '@chakra-ui/react';
+import FadeInUp from '../../components/Animation/FadeInUp';
 
-// const MasterCard = props => {
-//   const id = props.id;
-//   const EID = props.EID;
-//   const name = props.name;
-//   const designation = props.designation;
-//   const sector = props.sector;
-//   const block = props.block;
-//   const qrtr = props.qrtr;
-//   const phone = props.phone;
-//   const timestamp = props.timestamp;
-//   const category = props.category;
-//   const subcategory = props.subcategory;
-//   const description = props.description;
-//   const status = props.status;
-//   const asgnTO_ID = props.asgnTO_ID;
-//   const asgnTO_name = props.asgnTO_name;
-//   const asgnTO_contact = props.asgnTO_contact;
-//   const asgnTO_desig = props.asgnTO_desig;
-//   const feedback = props.feedback;
-//   const completedTime = props.completedTime;
-//   const OTP = props.OTP;
-//   const adminRemoved = props.adminRemoved;
-
-//   // <MasterModalBox />;
-
-//   return (
-//     <>
-//       <Box
-//         py="3rem"
-//         px="2rem"
-//         width="20vw"
-//         borderRadius="16px"
-//         boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-//         height={{ sm: '300px' }}
-//         _hover={{
-//           boxShadow:
-//             '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-//         }}
-//         position="relative"
-//       >
-//         {/* <Text>Complaint ID {id}</Text> */}
-//         {/* <b>asgnTO_ID</b> : {asgnTO_ID}, <br /> */}
-//         {asgnTO_name}({asgnTO_desig}) , {asgnTO_contact} <br />
-//         {/* <b>adminRemoved</b> : {adminRemoved}, <br /> */}
-//         <br />
-//         {/* {timestamp}<br/> {completedTime}, <br /> */}
-//         {/* <br /> */}
-//         {/* <b>EID</b> : {EID}, <br /> */}
-//         {/* <b>name</b> : {name}({designation})<br /> */}
-//         <b>phone</b> : {phone}, <br />
-//         <b>Address</b> : {sector}-{block}/{qrtr}, <br />
-//         <b>status</b> : {status}, <br />
-//         <b>Complaint type</b> : {category} || {subcategory}, <br />
-//         {/* <b>Description</b> : {description}, <br /> */}
-//         {/* <b>OTP</b> : {OTP}, <br /> */}
-//         <b>Feedback</b> : {feedback}, <br />
-//       </Box>
-//     </>
-//   );
-// };
 
 const Master = () => {
   var result = [''];
   const [complaint, setcomplaint] = useState([]);
   const [allAdmin, setAllAdmin] = useState([]);
-
   const callMaster = async () => {
     try {
       result = await axios.get('http://localhost:8000/master');
@@ -106,6 +52,9 @@ const Master = () => {
         fontWeight={"bold"}
         my={"2rem"}
         mx={"6rem"}
+        p={"2rem"}
+        px={"4rem"}
+        bgColor={"#e5e6e7"}
         >Master dashboard</Heading>
       <br />
       <Button onClick={callMaster} mx={"6rem"}>Refresh</Button>
@@ -123,7 +72,7 @@ const Master = () => {
 
         <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
           {complaint.map(res =>
-            res.master == true ? (
+            res.master === true ? (
               <MasterModalBox
                 id={res._id} //complaint id
                 EID={res.EID} //emp id
@@ -445,6 +394,10 @@ const Master = () => {
           Engineers on Duty
         </Text>
         <br />
+        <Box
+        id="A_admin"
+        >
+
         <Text
         fontSize={"26px"}
         fontWeight={"bold"}
@@ -453,6 +406,7 @@ const Master = () => {
         >
           Sector A
         </Text>
+          </Box>
               
               <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
                 {allAdmin.map(res => (
@@ -794,10 +748,211 @@ const Master = () => {
 
 
         <br />
+        <AddAdmins/>
       </Box>
       <Button onClick={callMaster}>Click me</Button>
     </ChakraProvider>
   );
 };
+
+const AddAdmins = () =>{
+  const [msg, setmsg] = useState('Please fill in the following details');
+  const [AID, setAID] = useState('209301');
+  const [password, setPassword] = useState('123456');
+  const [cpassword, setCpassword] = useState('123456');  
+  const [phone, setContact] = useState('9140426929');
+  const [sector, setSector] = useState('');
+  const [email, setEmail] = useState('');
+  const [designation,setDesig] = useState('JE');
+  const [department, setDepartment] = useState('');  
+  const [name, setName] = useState('');
+  const [stat, setStat] = useState('Register User');
+
+  const handleAIDChange = e => setAID(e.target.value);
+  const handlepasswordChange = e => setPassword(e.target.value);
+  const handleCpasswordChange = e => setCpassword(e.target.value);
+  const handleContactChange = e => setContact(e.target.value);
+  const handleSector = e => setSector(e.target.value);
+  const handleEmailChange = e => setEmail(e.target.value);
+  const handleDesigChange = e => setDesig(e.target.value);
+  const handleDeptChange = e => setDepartment(e.target.value);
+  const handleNameChange = e => setName(e.target.value);
+
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    console.log(AID);
+    console.log(password);
+
+    try {
+      let dat = await axios.post('http://localhost:8000/admin/register', {
+        AID,
+        name,
+        email,
+        phone,
+        password,
+        cpassword,
+        sector,
+        department,
+        designation,
+      });
+
+      // console.log(dat.data.admin);
+      // const stringToken = '' + dat.data.token;
+      // console.log('String Token : ' + stringToken);
+      // setToken(dat.data.token);
+      // console.log(dat.data.token);
+
+      if (dat.status === 201) {
+        setmsg('Successful Registration');
+        setStat('Registered');
+        setTimeout(() => {
+          setStat('Register User')
+        }, 2000);
+
+      
+      } else {
+        setStat('Registration Failed');
+        setmsg('Registration Failed');
+        setTimeout(() => {
+          setStat('Register User')
+        }, 2000);
+      }
+      console.log('status for admin : ' + dat.status);
+    } catch (error) {
+      setmsg('Registration Failed');
+
+      console.log(error);
+    }
+  };
+
+  return(
+    <ChakraProvider theme={theme}>
+      <FadeInUp>
+        <Flex
+          minH={'100vh'}
+          align={'center'}
+          justify={'center'}
+          bg={useColorModeValue('gray.10', 'gray.800')}
+        >
+          <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+            <Stack align={'center'}>
+              <Heading fontSize={'4xl'}>Add Engineers</Heading>
+              <Text fontSize={'lg'} color={'gray.600'}>
+                Add engineers on duty to handle more service requests
+              </Text>
+              <Text>{msg}</Text>
+            </Stack>
+            <Box
+              rounded={'lg'}
+              bg={useColorModeValue('white', 'gray.700')}
+              boxShadow={'lg'}
+              p={8}
+            >
+              <Stack spacing={4}>
+                <form onSubmit={handleSubmit}>
+                <FormControl id="AID">
+                    <FormLabel>UNIQUE ADMIN ID</FormLabel>
+                    <Input
+                      type="text"
+                      id="AID"
+                      value={AID}
+                      onChange={handleAIDChange}
+                    />
+                  </FormControl>
+                  <FormControl id="Contact">
+                    <FormLabel>Contact</FormLabel>
+                    <Input
+                      type="text"
+                      id="AID"
+                      value={phone}
+                      onChange={handleContactChange}
+                    />
+                  </FormControl>
+                  <FormControl id="Name">
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      type="text"
+                      id="Name"
+                      value={name}
+                      onChange={handleNameChange}
+                    />
+                  </FormControl>
+                  <FormControl id="Desig">
+                    <FormLabel>Designation</FormLabel>
+                    <Input
+                      type="text"
+                      id="Desig"
+                      value={designation}
+                      onChange={handleDesigChange}
+                    />
+                  </FormControl>
+                  <FormControl id="AID">
+                    <FormLabel>Department</FormLabel>
+                    <Input
+                      type="text"
+                      id="AID"
+                      value={department}
+                      onChange={handleDeptChange}
+                    />
+                  </FormControl>
+                  <FormControl id="password">
+                    <FormLabel>Sector</FormLabel>
+                    <Input
+                      type="text"
+                      id="secot"
+                      value={sector}
+                      onChange={handleSector}
+                    />
+                  </FormControl>
+                  <FormControl id="password">
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                      type="email"
+                      id="email"
+                      value={email}
+                      onChange={handleEmailChange}
+                    />
+                  </FormControl>
+                  <FormControl id="password">
+                    <FormLabel>Password</FormLabel>
+                    <Input
+                      type="password"
+                      id="password"
+                      value={password}
+                      onChange={handlepasswordChange}
+                    />
+                  </FormControl>
+                  <FormControl id="cpassword">
+                    <FormLabel>Confirm Password</FormLabel>
+                    <Input
+                      type="password"
+                      id="password"
+                      value={cpassword}
+                      onChange={handleCpasswordChange}
+                    />
+                  </FormControl>
+                  <Stack spacing={10} mt={"1rem"}>
+                    
+                    <Button
+                      bg={'blue.400'}
+                      color={'white'}
+                      _hover={{
+                        bg: 'blue.500',
+                      }}
+                      type="submit"
+                    >
+                      {stat}
+                    </Button>
+                  </Stack>
+                </form>
+              </Stack>
+            </Box>
+          </Stack>
+        </Flex>
+      </FadeInUp>  
+    </ChakraProvider>
+  );
+}
 
 export default Master;

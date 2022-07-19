@@ -60,7 +60,10 @@ function App() {
                   </Button>
                 </Link>
                 <Link href="/admin">
-                  <Button rounded={'full'}>Admin</Button>
+                  <Button rounded={'full'}>Engineers</Button>
+                </Link>
+                <Link href="/master">
+                  <Button rounded={'full'}>Master</Button>
                 </Link>
               </Stack>
             </Stack>

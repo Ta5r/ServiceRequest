@@ -16,6 +16,7 @@ const ACard = props => {
   const block = props.block;
   const qrtr = props.qrtr;
   const phone = props.phone;
+  const adminRemoved = props.adminRemoved;
   const completedTime = props.completedTime.slice(0, 25);
   const timestamp = props.timestamp.slice(0, 25);
   const status = props.status;
@@ -31,7 +32,7 @@ const ACard = props => {
 
   const handleCloseReq = () => {
     var password = prompt('Password');
-    if (password == OTP) {
+    if (password === OTP) {
       console.log('Can Close req : ' + id);
       axios
         .post('http://localhost:8000/admin/close', {
@@ -94,12 +95,14 @@ const ACard = props => {
                 subcategory={subcategory}
                 phone={phone}
                 status={status}
+                adminRemoved={adminRemoved}
                 name={name}
                 designation={designation}
+                id={id}
               />
             </GridItem>
             <GridItem w="100%" textAlign={'center'}>
-              {status.toLowerCase() == 'pending' ? (
+              {status.toLowerCase() === 'pending' ? (
                 <Button onClick={handleCloseReq}>Close Request</Button>
               ) : (
                 <Closed cid={id} />

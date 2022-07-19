@@ -25,6 +25,7 @@ export default function LoginAdmin() {
   const [AID, setAID] = useState('20930132');
   const [password, setpassword] = useState('123456');
   const [msg, setmsg] = useState('Please fill in your credentials');
+  const [stat, setStat] = useState('Sign in');
   const handleAIDChange = e => setAID(e.target.value);
   const handlepasswordChange = e => setpassword(e.target.value);
 
@@ -51,15 +52,22 @@ export default function LoginAdmin() {
 
       if (dat.status === 200) {
         setmsg('Successful signin');
+        setStat('Signin successful')
         setTimeout(() => {
           navigate('/admin/dashboard');
         }, 2000);
       } else {
+        setStat('Please Try Again');
         setmsg('INCORRECT CREDENTIALS');
       }
       console.log('status for admin : ' + dat.status);
     } catch (error) {
-      setmsg('INCORRECT CREDENTIALS');
+        setStat('Please Try Again');
+        setTimeout(() => {
+          setStat('Sign in');
+          setmsg('Please fill in your credentials')
+        }, 3000)
+        setmsg('INCORRECT CREDENTIALS');
       console.log(error);
     }
   };
@@ -124,7 +132,7 @@ export default function LoginAdmin() {
                       }}
                       type="submit"
                     >
-                      Sign in
+                      {stat}
                     </Button>
                   </Stack>
                 </form>
