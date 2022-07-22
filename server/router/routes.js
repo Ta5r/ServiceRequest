@@ -21,12 +21,10 @@ router.get("/master", async (req, res) => {
 });
 
 router.get("/get/admin", async (req, res) => {
- try{
-
-   const allAdmins = await Admin.find();
-   res.status(200).json(allAdmins);
-  }catch(e)
-  {
+  try {
+    const allAdmins = await Admin.find();
+    res.status(200).json(allAdmins);
+  } catch (e) {
     console.log(e);
   }
 });
@@ -46,7 +44,13 @@ router.post("/get/admin", async (req, res) => {
 
 router.post("/escalate", async (req, res) => {
   try {
-    const { complaintID,asgnTO_ID, asgnTO_name, asgnTO_contact, asgnTO_desig } = req.body;
+    const {
+      complaintID,
+      asgnTO_ID,
+      asgnTO_name,
+      asgnTO_contact,
+      asgnTO_desig,
+    } = req.body;
     console.log("\\");
     console.log(req.body);
     console.log("\\");
@@ -317,6 +321,100 @@ router.post("/admin/remove", async (req, res) => {
     }
   );
   res.json({ result });
+});
+
+router.post("/masterfilter", async (req, res) => {
+  var sectArray = [];
+  var deptArray = [];
+  const f_a = req.body.sect.a.checked;
+  const f_b = req.body.sect.b.checked;
+  const f_c = req.body.sect.c.checked;
+  const f_civl = req.body.dept.civl.checked;
+  const f_elct = req.body.dept.elct.checked;
+  const f_tlcm = req.body.dept.tlcm.checked;
+  const f_intr = req.body.dept.intr.checked;
+  if (f_a === true) {
+    sectArray.push("A");
+  }
+  if (f_b === true) {
+    sectArray.push("B");
+  }
+  if (f_c === true) {
+    sectArray.push("C");
+  }
+  if (f_civl === true) {
+    deptArray.push("CIVIL");
+  }
+  if (f_elct === true) {
+    deptArray.push("ELECTRICAL");
+  }
+  if (f_tlcm === true) {
+    deptArray.push("TELECOM");
+  }
+  if (f_intr === true) {
+    deptArray.push("INTERNET");
+  }
+  if(sectArray.length === 0) {sectArray = ["A","B","C"]}
+  if(deptArray.length === 0) {deptArray = ["CIVIL","ELECTRICAL","TELECOM","INTERNET"]}
+  console.log(sectArray);
+  console.log(deptArray);
+  const result = await Complaint.find({
+    $and: [{ sector: { $in: sectArray } }, { category: { $in: deptArray } }],
+  });
+  console.log(result);
+  res.status(200).json(result);
+});
+
+router.post("/masterfilterAdmin", async (req, res) => {
+  var sectArray = [];
+  var deptArray = [];
+  var posArray = [];
+  const f_a = req.body.sect.a.checked;
+  const f_b = req.body.sect.b.checked;
+  const f_c = req.body.sect.c.checked;
+  const f_civl = req.body.dept.civl.checked;
+  const f_elct = req.body.dept.elct.checked;
+  const f_tlcm = req.body.dept.tlcm.checked;
+  const f_intr = req.body.dept.intr.checked;
+  const f_je = req.body.pos.je.checked;
+  const f_sse = req.body.pos.sse.checked;
+  if (f_a === true) {
+    sectArray.push("A");
+  }
+  if (f_b === true) {
+    sectArray.push("B");
+  }
+  if (f_c === true) {
+    sectArray.push("C");
+  }
+  if (f_civl === true) {
+    deptArray.push("CIVIL");
+  }
+  if (f_elct === true) {
+    deptArray.push("ELECTRICAL");
+  }
+  if (f_tlcm === true) {
+    deptArray.push("TELECOM");
+  }
+  if (f_intr === true) {
+    deptArray.push("INTERNET");
+  }
+  if (f_je === true) {
+    posArray.push("JE");
+  }
+  if (f_sse === true) {
+    posArray.push("SSE");
+  }
+  if(sectArray.length === 0) {sectArray = ["A","B","C"]}
+  if(deptArray.length === 0) {deptArray = ["CIVIL","ELECTRICAL","TELECOM","INTERNET"]}
+  if(posArray.length === 0) {posArray = ["JE","SSE"]}
+  console.log(sectArray);
+  console.log(deptArray);
+  const result = await Admin.find({
+    $and: [{ sector: { $in: sectArray } }, { department: { $in: deptArray } }, { designation: { $in: posArray }}],
+  });
+  console.log(result);
+  res.status(200).json(result);
 });
 
 router.post("/user/dashboard/request", async (req, res) => {

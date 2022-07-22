@@ -6,7 +6,7 @@ import {
   Button,
   Text,
   Box,
-  Heading, 
+  Heading,
   Flex,
   FormControl,
   FormLabel,
@@ -17,60 +17,216 @@ import {
 
 import MasterModalBox from '../../components/layouts/MasterModalBox';
 import { SimpleGrid } from '@chakra-ui/react';
+import { Checkbox, CheckboxGroup } from '@chakra-ui/react';
 import FadeInUp from '../../components/Animation/FadeInUp';
-
 
 const Master = () => {
   var result = [''];
   const [complaint, setcomplaint] = useState([]);
   const [allAdmin, setAllAdmin] = useState([]);
+  const [filterReqs, setFilterReq] = useState([]);
+  const [sectcheck, setSectorCheck] = useState({
+    a: {
+      checked: false,
+    },
+    b: {
+      checked: false,
+    },
+    c: {
+      checked: false,
+    },
+  });
+  const [deptcheck, setDeptCheck] = useState({
+    civl: {
+      checked: false,
+    },
+    elct: {
+      checked: false,
+    },
+    tlcm: {
+      checked: false,
+    },
+    intr: {
+      checked: false,
+    },
+  });
+
+  const [sectAcheck, setSectorACheck] = useState({
+    a: {
+      checked: false,
+    },
+    b: {
+      checked: false,
+    },
+    c: {
+      checked: false,
+    },
+  });
+  const [deptAcheck, setDeptACheck] = useState({
+    civl: {
+      checked: false,
+    },
+    elct: {
+      checked: false,
+    },
+    tlcm: {
+      checked: false,
+    },
+    intr: {
+      checked: false,
+    },
+  });
+
+  const [posAcheck, setposACheck] = useState({
+    je: {
+      checked: false,
+    },
+    sse: {
+      checked: false,
+    },
+  });
+
   const callMaster = async () => {
     try {
       result = await axios.get('http://localhost:8000/master');
       setcomplaint(result.data);
       console.log(result.data);
-      allAdmins();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const allAdmins = async () => {
+  const handleFilterA = () => {
+    const val = sectcheck.a.checked ? false : true;
+    setSectorCheck({ ...sectcheck, a: { checked: val } });
+  };
+  const handleFilterB = () => {
+    const val = sectcheck.b.checked ? false : true;
+    setSectorCheck({ ...sectcheck, b: { checked: val } });
+  };
+  const handleFilterC = () => {
+    const val = sectcheck.c.checked ? false : true;
+    setSectorCheck({ ...sectcheck, c: { checked: val } });
+  };
+
+  const handleFilterCivl = () => {
+    const val = deptcheck.civl.checked ? false : true;
+    setDeptCheck({ ...deptcheck, civl: { checked: val } });
+  };
+  const handleFilterElct = () => {
+    const val = deptcheck.elct.checked ? false : true;
+    setDeptCheck({ ...deptcheck, elct: { checked: val } });
+  };
+  const handleFilterTlcm = () => {
+    const val = deptcheck.tlcm.checked ? false : true;
+    setDeptCheck({ ...deptcheck, tlcm: { checked: val } });
+  };
+
+  const handleFilterIntr = () => {
+    const val = deptcheck.intr.checked ? false : true;
+    setDeptCheck({ ...deptcheck, intr: { checked: val } });
+  };
+
+  // ________________________________________________________________________
+
+  const handleAFilterA = () => {
+    const val = sectAcheck.a.checked ? false : true;
+    setSectorACheck({ ...sectAcheck, a: { checked: val } });
+  };
+  const handleAFilterB = () => {
+    const val = sectAcheck.b.checked ? false : true;
+    setSectorACheck({ ...sectAcheck, b: { checked: val } });
+  };
+  const handleAFilterC = () => {
+    const val = sectAcheck.c.checked ? false : true;
+    setSectorACheck({ ...sectAcheck, c: { checked: val } });
+  };
+
+  const handleAFilterCivl = () => {
+    const val = deptAcheck.civl.checked ? false : true;
+    setDeptACheck({ ...deptAcheck, civl: { checked: val } });
+  };
+  const handleAFilterElct = () => {
+    const val = deptAcheck.elct.checked ? false : true;
+    setDeptACheck({ ...deptAcheck, elct: { checked: val } });
+  };
+  const handleAFilterTlcm = () => {
+    const val = deptAcheck.tlcm.checked ? false : true;
+    setDeptACheck({ ...deptAcheck, tlcm: { checked: val } });
+  };
+
+  const handleAFilterIntr = () => {
+    const val = deptAcheck.intr.checked ? false : true;
+    setDeptACheck({ ...deptAcheck, intr: { checked: val } });
+  };
+
+  const handleAFilterJE = () => {
+    const val = posAcheck.je.checked ? false : true;
+    setposACheck({ ...posAcheck, je: { checked: val } });
+  };
+
+  const handleAFilterSSE = () => {
+    const val = posAcheck.sse.checked ? false : true;
+    setposACheck({ ...posAcheck, sse: { checked: val } });
+  };
+
+  // _________________________________________________________________________
+
+  const handleSubmit = async event => {
+    event.preventDefault();
+    console.log(sectcheck);
+    console.log(deptcheck);
     try {
-      result = await axios.get('http://localhost:8000/get/admin');
-      setAllAdmin(result.data);
-      console.log(result.data);
+      const res = await axios.post('http://localhost:8000/masterfilter', {
+        sect: sectcheck,
+        dept: deptcheck,
+      });
+      setFilterReq(res.data);
     } catch (e) {
       console.log(e);
     }
   };
+  const handleSubmitAdmin = async event => {
+    event.preventDefault();
+    console.log(sectAcheck);
+    console.log(deptAcheck);
+    try {
+      const res = await axios.post('http://localhost:8000/masterfilterAdmin', {
+        sect: sectAcheck,
+        dept: deptAcheck,
+        pos: posAcheck,
+      });
+      setAllAdmin(res.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  console.log(filterReqs);
+  console.log(allAdmin);
 
   return (
     <ChakraProvider theme={theme}>
       <Heading
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        p={"2rem"}
-        px={"4rem"}
-        bgColor={"#e5e6e7"}
-        >Master dashboard</Heading>
-      <br />
-      <Button onClick={callMaster} mx={"6rem"}>Refresh</Button>
-      <br />
+        fontSize={'26px'}
+        fontWeight={'bold'}
+        my={'2rem'}
+        mx={'6rem'}
+        p={'2rem'}
+        px={'4rem'}
+        bgColor={'#e5e6e7'}
+      >
+        Master dashboard
+      </Heading>
       <Box>
-      <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >
+        <Text fontSize={'26px'} fontWeight={'bold'} my={'1rem'} mx={'6rem'}>
           Reported complaints
         </Text>
         <br />
+        <Button onClick={callMaster} mx={'6rem'}>
+          Refresh
+        </Button>
 
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
+        <SimpleGrid columns={[2, 2, 3, 4]} mx={'6rem'} my={'2rem'}>
           {complaint.map(res =>
             res.master === true ? (
               <MasterModalBox
@@ -100,671 +256,229 @@ const Master = () => {
           )}
         </SimpleGrid>
       </Box>
-      <br />
-      <br />
-      <br />
       <Box>
-      <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >
-          Department Wise complaints
+        <Text fontSize={'26px'} fontWeight={'bold'} my={'2rem'} mx={'6rem'}>
+          Find Complaints
         </Text>
+        <form onSubmit={handleSubmit}>
+          <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
+            Sector
+          </Text>
+          <CheckboxGroup colorScheme="green">
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+              <Checkbox onChange={handleFilterA} name="filtera" value="A">
+                A
+              </Checkbox>
+              <Checkbox onChange={handleFilterB} name="filterb" value="B">
+                B
+              </Checkbox>
+              <Checkbox onChange={handleFilterC} name="filterc" value="C">
+                C
+              </Checkbox>
+            </Stack>
+            <br />
+            <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
+              Category
+            </Text>
+          </CheckboxGroup>
+          <CheckboxGroup colorScheme="green">
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+              <Checkbox
+                onChange={handleFilterCivl}
+                name="filtercivl"
+                value="civil"
+              >
+                Civil
+              </Checkbox>
+              <Checkbox
+                onChange={handleFilterElct}
+                name="filterelct"
+                value="electrical"
+              >
+                Electrical
+              </Checkbox>
+              <Checkbox
+                onChange={handleFilterTlcm}
+                name="filtertlcm"
+                value="telecom"
+              >
+                Telecom
+              </Checkbox>
+              <Checkbox
+                onChange={handleFilterIntr}
+                name="filterintr"
+                value="internet"
+              >
+                Internet
+              </Checkbox>
+            </Stack>
+          </CheckboxGroup>
+          <br />
+          <Button type="submit" mx={'6rem'}>
+            Search Complaints
+          </Button>
+        </form>
         <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >Civil</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.category.toLowerCase() === 'civil' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
+        <SimpleGrid columns={[2, 2, 2, 3, 4]} spacingY={'5rem'} mx={'6rem'}>
+          {filterReqs.map(res => (
+            <MasterModalBox
+              id={res._id} //complaint id
+              EID={res.EID} //emp id
+              name={res.name}
+              designation={res.designation}
+              sector={res.sector}
+              block={res.block}
+              qrtr={res.qrtr}
+              phone={res.phone}
+              timestamp={res.timestamp}
+              category={res.category}
+              subcategory={res.subcategory}
+              description={res.description}
+              status={res.status}
+              asgnTO_ID={res.asgnTO_ID} //admin id
+              asgnTO_name={res.asgnTO_name}
+              asgnTO_contact={res.asgnTO_contact}
+              asgnTO_desig={res.asgnTO_desig}
+              feedback={res.feedback}
+              completedTime={res.completedTime}
+              OTP={res.OTP}
+              adminRemoved={res.adminRemoved}
+            />
+          ))}
         </SimpleGrid>
-        <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >Electrical</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.category.toLowerCase() === 'electrical' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
-        </SimpleGrid>
-        <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >Telecom</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.category.toLowerCase() === 'telecom' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
-        </SimpleGrid>
-        <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >Internet</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.category.toLowerCase() === 'internet' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
-        </SimpleGrid>
-        <br />
-        <br />
       </Box>
+      <br />
       <Box>
-      <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >
-          Sector Wise complaints
-        </Text>
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >SECTOR - A</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.sector.toLowerCase() === 'a' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
-        </SimpleGrid>
-        <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >SECTOR - B</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.sector.toLowerCase() === 'b' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
-        </SimpleGrid>
-        <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >SECTOR - C</Text>
-
-        <SimpleGrid columns={[2, 2, 3, 4]} spacingY="50px" mx={'6rem'}>
-          {complaint.map(res =>
-            res.sector.toLowerCase() === 'c' ? (
-              <MasterModalBox
-                id={res._id} //complaint id
-                EID={res.EID} //emp id
-                name={res.name}
-                designation={res.designation}
-                sector={res.sector}
-                block={res.block}
-                qrtr={res.qrtr}
-                phone={res.phone}
-                timestamp={res.timestamp}
-                category={res.category}
-                subcategory={res.subcategory}
-                description={res.description}
-                status={res.status}
-                asgnTO_ID={res.asgnTO_ID} //admin id
-                asgnTO_name={res.asgnTO_name}
-                asgnTO_contact={res.asgnTO_contact}
-                asgnTO_desig={res.asgnTO_desig}
-                feedback={res.feedback}
-                completedTime={res.completedTime}
-                OTP={res.OTP}
-                adminRemoved={res.adminRemoved}
-              />
-            ) : null
-          )}
-        </SimpleGrid>
-        <br />
-        <br />
-        <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >
+        <Text fontSize={'26px'} fontWeight={'bold'} mx={'6rem'}>
           Engineers on Duty
         </Text>
-        <br />
-        <Box
-        id="A_admin"
-        >
-
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >
-          Sector A
+        <Text fontSize={'26px'} fontWeight={'bold'} my={'2rem'} mx={'6rem'}>
+          Find Engineers
         </Text>
-          </Box>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "A" && res.department==="CIVIL")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "A" && res.department==="ELECTRICAL")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "A" && res.department==="TELECOM")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "A" && res.department==="INTERNET")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
+        <form onSubmit={handleSubmitAdmin}>
+          <CheckboxGroup colorScheme="green">
+            <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
+              Sector
+            </Text>
 
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+              <Checkbox onChange={handleAFilterA} name="filtera" value="A">
+                A
+              </Checkbox>
+              <Checkbox onChange={handleAFilterB} name="filterb" value="B">
+                B
+              </Checkbox>
+              <Checkbox onChange={handleAFilterC} name="filterc" value="C">
+                C
+              </Checkbox>
+            </Stack>
+          </CheckboxGroup>
+          <CheckboxGroup colorScheme="green">
+            <br />
+            <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
+              Designation
+            </Text>
 
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+              <Checkbox onChange={handleAFilterSSE} name="filtera" value="A">
+                SSE
+              </Checkbox>
+              <Checkbox onChange={handleAFilterJE} name="filterb" value="B">
+                JE
+              </Checkbox>
+            </Stack>
+          </CheckboxGroup>
+          <CheckboxGroup colorScheme="green">
+            <br />
+            <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
+              Department
+            </Text>
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+              <Checkbox
+                onChange={handleAFilterCivl}
+                name="filtercivl"
+                value="civil"
+              >
+                civil
+              </Checkbox>
+              <Checkbox
+                onChange={handleAFilterElct}
+                name="filterelct"
+                value="electrical"
+              >
+                electrical
+              </Checkbox>
+              <Checkbox
+                onChange={handleAFilterTlcm}
+                name="filtertlcm"
+                value="telecom"
+              >
+                telecom
+              </Checkbox>
+              <Checkbox
+                onChange={handleAFilterIntr}
+                name="filterintr"
+                value="internet"
+              >
+                internet
+              </Checkbox>
+            </Stack>
+          </CheckboxGroup>
+          <br />
+          <Button type="submit" mx={'6rem'}>
+            Search Employees
+          </Button>
+        </form>
         <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
+        <SimpleGrid
+          columns={[2, 3, 4, 6]}
+          spacingY="50px"
+          mx={'6rem'}
+          pb={'5rem'}
         >
-          Sector B
-        </Text>
-
-        
-       
-        <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "B" && res.department==="CIVIL")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-        <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "B" && res.department==="ELECTRICAL")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "B" && res.department==="TELECOM")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "B" && res.department==="INTERNET")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-
-
+          {allAdmin.map(res => (
+            <Box
+              py="2rem"
+              px="1.5rem"
+              width="13vw"
+              borderRadius="16px"
+              boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
+              height={{ sm: '150px' }}
+              _hover={{
+                boxShadow:
+                  '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+              }}
+              position="relative"
+            >
+              {res.name}({res.designation})
+              <br />
+              {res.AID}
+              <br />
+              {res.department}
+              <br />
+            </Box>
+          ))}
+        </SimpleGrid>
+        <br />
 
         <br />
-        <Text
-        fontSize={"26px"}
-        fontWeight={"bold"}
-        my={"2rem"}
-        mx={"6rem"}
-        >
-          Sector C
-        </Text>
-
-        
-       
-        <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "C" && res.department==="CIVIL")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-        <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "C" && res.department==="ELECTRICAL")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "C" && res.department==="TELECOM")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-              
-              <SimpleGrid columns={[2, 3, 4, 6]} spacingY="50px" mx={'6rem'} pb={"5rem"}>
-                {allAdmin.map(res => (
-                  (res.sector.toUpperCase() === "C" && res.department==="INTERNET")?
-                  (<Box
-                    py="2rem"
-                    px="1.5rem"
-                    width="13vw"
-                    borderRadius="16px"
-                    boxShadow="0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)"
-                    height={{ sm: '150px' }}
-                    _hover={{
-                      boxShadow:
-                        '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
-                    }}
-                    position="relative"
-                  >
-                    {res.name}({res.designation})
-                    <br/>
-                    {res.AID}
-                    <br/>
-                    {res.department}
-                    <br/>
-                  </Box>):null
-                ))}
-              </SimpleGrid>
-
-
-
-        <br />
-        <AddAdmins/>
+        <AddAdmins />
       </Box>
       <Button onClick={callMaster}>Click me</Button>
     </ChakraProvider>
   );
 };
 
-const AddAdmins = () =>{
+const AddAdmins = () => {
   const [msg, setmsg] = useState('Please fill in the following details');
   const [AID, setAID] = useState('209301');
   const [password, setPassword] = useState('123456');
-  const [cpassword, setCpassword] = useState('123456');  
+  const [cpassword, setCpassword] = useState('123456');
   const [phone, setContact] = useState('9140426929');
   const [sector, setSector] = useState('');
   const [email, setEmail] = useState('');
-  const [designation,setDesig] = useState('JE');
-  const [department, setDepartment] = useState('');  
+  const [designation, setDesig] = useState('JE');
+  const [department, setDepartment] = useState('');
   const [name, setName] = useState('');
   const [stat, setStat] = useState('Register User');
 
@@ -777,7 +491,6 @@ const AddAdmins = () =>{
   const handleDesigChange = e => setDesig(e.target.value);
   const handleDeptChange = e => setDepartment(e.target.value);
   const handleNameChange = e => setName(e.target.value);
-
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -797,25 +510,17 @@ const AddAdmins = () =>{
         designation,
       });
 
-      // console.log(dat.data.admin);
-      // const stringToken = '' + dat.data.token;
-      // console.log('String Token : ' + stringToken);
-      // setToken(dat.data.token);
-      // console.log(dat.data.token);
-
       if (dat.status === 201) {
         setmsg('Successful Registration');
         setStat('Registered');
         setTimeout(() => {
-          setStat('Register User')
+          setStat('Register User');
         }, 2000);
-
-      
       } else {
         setStat('Registration Failed');
         setmsg('Registration Failed');
         setTimeout(() => {
-          setStat('Register User')
+          setStat('Register User');
         }, 2000);
       }
       console.log('status for admin : ' + dat.status);
@@ -826,14 +531,14 @@ const AddAdmins = () =>{
     }
   };
 
-  return(
+  return (
     <ChakraProvider theme={theme}>
       <FadeInUp>
         <Flex
           minH={'100vh'}
           align={'center'}
           justify={'center'}
-          bg={useColorModeValue('gray.10', 'gray.800')}
+          bg={useColorModeValue('gray.100', 'gray.800')}
         >
           <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
             <Stack align={'center'}>
@@ -851,7 +556,7 @@ const AddAdmins = () =>{
             >
               <Stack spacing={4}>
                 <form onSubmit={handleSubmit}>
-                <FormControl id="AID">
+                  <FormControl id="AID">
                     <FormLabel>UNIQUE ADMIN ID</FormLabel>
                     <Input
                       type="text"
@@ -932,8 +637,7 @@ const AddAdmins = () =>{
                       onChange={handleCpasswordChange}
                     />
                   </FormControl>
-                  <Stack spacing={10} mt={"1rem"}>
-                    
+                  <Stack spacing={10} mt={'1rem'}>
                     <Button
                       bg={'blue.400'}
                       color={'white'}
@@ -950,9 +654,9 @@ const AddAdmins = () =>{
             </Box>
           </Stack>
         </Flex>
-      </FadeInUp>  
+      </FadeInUp>
     </ChakraProvider>
   );
-}
+};
 
 export default Master;
