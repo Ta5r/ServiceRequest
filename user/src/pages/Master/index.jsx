@@ -25,6 +25,14 @@ const Master = () => {
   const [complaint, setcomplaint] = useState([]);
   const [allAdmin, setAllAdmin] = useState([]);
   const [filterReqs, setFilterReq] = useState([]);
+  const [reqStatuscheck, setReqStatuscheck] = useState({
+    completed: {
+      checked: false,
+    },
+    pending: {
+      checked: false,
+    },
+  });
   const [sectcheck, setSectorCheck] = useState({
     a: {
       checked: false,
@@ -170,16 +178,27 @@ const Master = () => {
     setposACheck({ ...posAcheck, sse: { checked: val } });
   };
 
+  const handleFilterCompleted = () => {
+    const val = reqStatuscheck.completed.checked ? false : true;
+    setReqStatuscheck({ ...reqStatuscheck, completed: { checked: val } });
+  };
+  const handleFilterPending = () => {
+    const val = reqStatuscheck.pending.checked ? false : true;
+    setReqStatuscheck({ ...reqStatuscheck, pending: { checked: val } });
+  };
+
   // _________________________________________________________________________
 
   const handleSubmit = async event => {
     event.preventDefault();
     console.log(sectcheck);
     console.log(deptcheck);
+    console.log(reqStatuscheck);
     try {
       const res = await axios.post('http://localhost:8000/masterfilter', {
         sect: sectcheck,
         dept: deptcheck,
+        status: reqStatuscheck,
       });
       setFilterReq(res.data);
     } catch (e) {
@@ -265,7 +284,7 @@ const Master = () => {
             Sector
           </Text>
           <CheckboxGroup colorScheme="green">
-            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'} my={"1rem"}>
               <Checkbox onChange={handleFilterA} name="filtera" value="A">
                 A
               </Checkbox>
@@ -277,12 +296,12 @@ const Master = () => {
               </Checkbox>
             </Stack>
             <br />
+          </CheckboxGroup>
             <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
               Category
             </Text>
-          </CheckboxGroup>
           <CheckboxGroup colorScheme="green">
-            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'}>
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'} my={"1rem"}>
               <Checkbox
                 onChange={handleFilterCivl}
                 name="filtercivl"
@@ -310,6 +329,27 @@ const Master = () => {
                 value="internet"
               >
                 Internet
+              </Checkbox>
+            </Stack>
+          </CheckboxGroup>
+          <Text fontWeight={'bold'} fontSize={['md', 'lg', 'lg']} mx={'6rem'}>
+              Status
+            </Text>
+          <CheckboxGroup colorScheme="green">
+            <Stack spacing={[1, 5]} direction={['column', 'row']} mx={'6rem'} my={"1rem"}>
+              <Checkbox
+                onChange={handleFilterCompleted}
+                name="filtercompleted"
+                value="completed"
+              >
+                Completed
+              </Checkbox>
+              <Checkbox
+                onChange={handleFilterPending}
+                name="filterpending"
+                value="pending"
+              >
+                Pending
               </Checkbox>
             </Stack>
           </CheckboxGroup>

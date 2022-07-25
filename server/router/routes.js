@@ -326,6 +326,7 @@ router.post("/admin/remove", async (req, res) => {
 router.post("/masterfilter", async (req, res) => {
   var sectArray = [];
   var deptArray = [];
+  var statArray = [];
   const f_a = req.body.sect.a.checked;
   const f_b = req.body.sect.b.checked;
   const f_c = req.body.sect.c.checked;
@@ -333,6 +334,8 @@ router.post("/masterfilter", async (req, res) => {
   const f_elct = req.body.dept.elct.checked;
   const f_tlcm = req.body.dept.tlcm.checked;
   const f_intr = req.body.dept.intr.checked;
+  const f_comp = req.body.status.completed.checked;
+  const f_pend = req.body.status.pending.checked;
   if (f_a === true) {
     sectArray.push("A");
   }
@@ -354,12 +357,26 @@ router.post("/masterfilter", async (req, res) => {
   if (f_intr === true) {
     deptArray.push("INTERNET");
   }
-  if(sectArray.length === 0) {sectArray = ["A","B","C"]}
-  if(deptArray.length === 0) {deptArray = ["CIVIL","ELECTRICAL","TELECOM","INTERNET"]}
+  if (f_comp === true) {
+    statArray.push("COMPLETED");
+  }
+  if (f_pend === true) {
+    statArray.push("PENDING");
+  }
+  if (sectArray.length === 0) {
+    sectArray = ["A", "B", "C"];
+  }
+  if (deptArray.length === 0) {
+    deptArray = ["CIVIL", "ELECTRICAL", "TELECOM", "INTERNET"];
+  }
+  if (statArray.length === 0) {
+    statArray = ["COMPLETED", "PENDING"];
+  }
   console.log(sectArray);
   console.log(deptArray);
+  console.log(statArray);
   const result = await Complaint.find({
-    $and: [{ sector: { $in: sectArray } }, { category: { $in: deptArray } }],
+    $and: [{ sector: { $in: sectArray } }, { category: { $in: deptArray } }, { status: { $in: statArray } }],
   });
   console.log(result);
   res.status(200).json(result);
@@ -405,13 +422,23 @@ router.post("/masterfilterAdmin", async (req, res) => {
   if (f_sse === true) {
     posArray.push("SSE");
   }
-  if(sectArray.length === 0) {sectArray = ["A","B","C"]}
-  if(deptArray.length === 0) {deptArray = ["CIVIL","ELECTRICAL","TELECOM","INTERNET"]}
-  if(posArray.length === 0) {posArray = ["JE","SSE"]}
+  if (sectArray.length === 0) {
+    sectArray = ["A", "B", "C"];
+  }
+  if (deptArray.length === 0) {
+    deptArray = ["CIVIL", "ELECTRICAL", "TELECOM", "INTERNET"];
+  }
+  if (posArray.length === 0) {
+    posArray = ["JE", "SSE"];
+  }
   console.log(sectArray);
   console.log(deptArray);
   const result = await Admin.find({
-    $and: [{ sector: { $in: sectArray } }, { department: { $in: deptArray } }, { designation: { $in: posArray }}],
+    $and: [
+      { sector: { $in: sectArray } },
+      { department: { $in: deptArray } },
+      { designation: { $in: posArray } },
+    ],
   });
   console.log(result);
   res.status(200).json(result);
