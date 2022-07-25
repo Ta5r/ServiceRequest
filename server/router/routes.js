@@ -372,11 +372,17 @@ router.post("/masterfilter", async (req, res) => {
   if (statArray.length === 0) {
     statArray = ["COMPLETED", "PENDING"];
   }
+  console.log("Filters Recieved : ");
   console.log(sectArray);
   console.log(deptArray);
   console.log(statArray);
+  console.log("END");
   const result = await Complaint.find({
-    $and: [{ sector: { $in: sectArray } }, { category: { $in: deptArray } }, { status: { $in: statArray } }],
+    $and: [
+      { sector: { $in: sectArray } },
+      { category: { $in: deptArray } },
+      { status: { $in: statArray } },
+    ],
   });
   console.log(result);
   res.status(200).json(result);

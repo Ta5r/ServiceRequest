@@ -439,28 +439,28 @@ const Master = () => {
                 name="filtercivl"
                 value="civil"
               >
-                civil
+                Civil
               </Checkbox>
               <Checkbox
                 onChange={handleAFilterElct}
                 name="filterelct"
                 value="electrical"
               >
-                electrical
+                Electrical
               </Checkbox>
               <Checkbox
                 onChange={handleAFilterTlcm}
                 name="filtertlcm"
                 value="telecom"
               >
-                telecom
+                Telecom
               </Checkbox>
               <Checkbox
                 onChange={handleAFilterIntr}
                 name="filterintr"
                 value="internet"
               >
-                internet
+                Internet
               </Checkbox>
             </Stack>
           </CheckboxGroup>
